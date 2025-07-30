@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Receipt Generator - ABSKD Co.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body {
+      font-family: 'Roboto',  monospace;
+      margin: 0;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    .container {
+      max-width: 850px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .header {
+      border-bottom: 2px solid #b722a6;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    .company-info {
+      font-size: 14px;
+    }
+    .receipt-title {
+      background: #b722a6;
+      color: #fff;
+      padding: 12px;
+      text-align: center;
+      border-radius: 6px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .details {
+      border: 1px dashed #ccc;
+      padding: 15px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+    th {
+      background: #b722a6;
+      color: white;
+    }
+    .total {
+      text-align: right;
+      font-size: 15px;
+      margin-top: 10px;
+    }
+    .footer {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 30px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 6px 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', monospace;
+    }
+    button {
+      padding: 10px 20px;
+      background: #b722a6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Roboto', monospace;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #850c3a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="form-section" id="form-section">
+      <h2>Enter Receipt Details</h2>
+      <input type="text" id="customerName" placeholder="Customer Name" />
+      <input type="text" id="transactionDate" placeholder="Transaction Date (e.g. July 30, 2025)" />
+      <input type="text" id="teamName" placeholder="Team Name" />
+      <input type="number" id="quantity" placeholder="Quantity" min="1" />
+      <input type="text" id="description" placeholder="Description" />
+      <input type="number" id="cost" placeholder="Cost per Item (Pula)" />
+      <button onclick="generateReceipt()">Generate Receipt</button>
+    </div>
+
+    <div id="receipt" style="display: none">
+      <div class="header">
+        <div class="company-info">
+          <h2>ABSKD Co | Sports and Media</h2>
+          <p>12726 Broadhurst, Gaborone, South-East BW<br />
+            (267) 77811544<br />
+            abskdsolutions@gmail.com <br />
+            <a href="https://www.abskdsolutions.com">www.abskdsolutions.com</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="receipt-title">Receipt</div>
+
+      <div class="details">
+        <strong>Date:</strong> <span id="r-date"></span><br />
+        <strong>Name:</strong> <span id="r-name"></span><br />
+        <strong>Team:</strong> <span id="r-team"></span>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Qty</th>
+            <th>Cost (P)</th>
+            <th>Total (P)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="r-description"></td>
+            <td id="r-qty"></td>
+            <td id="r-cost"></td>
+            <td id="r-total"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="total">
+        <p><strong>Subtotal:</strong> <span id="r-subtotal"></span></p>
+        <p><strong>Fleet Fee (20%):</strong> <span id="r-tax"></span></p>
+        <h3>Total: <span id="r-grand"></span></h3>
+      </div>
+
+      <div class="footer">
+        <p>Thanks for your business!</p>
+        <p>POWERED BY ABSKD</p>
+        <button onclick="downloadPDF()">Download PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function generateReceipt() {
+      const name = document.getElementById('customerName').value;
+      const date = document.getElementById('transactionDate').value;
+      const team = document.getElementById('teamName').value;
+      const qty = parseInt(document.getElementById('quantity').value);
+      const desc = document.getElementById('description').value;
+      const cost = parseFloat(document.getElementById('cost').value);
+
+      if (!name || !date || !team || !qty || !desc || !cost) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      const total = qty * cost;
+      const tax = total * 0.20;
+      const grand = total + tax;
+
+      document.getElementById('r-name').textContent = name;
+      document.getElementById('r-date').textContent = date;
+      document.getElementById('r-team').textContent = team;
+      document.getElementById('r-description').textContent = desc;
+      document.getElementById('r-qty').textContent = qty;
+      document.getElementById('r-cost').textContent = `P${cost.toFixed(2)}`;
+      document.getElementById('r-total').textContent = `P${total.toFixed(2)}`;
+      document.getElementById('r-subtotal').textContent = `P${total.toFixed(2)}`;
+      document.getElementById('r-tax').textContent = `P${tax.toFixed(2)}`;
+      document.getElementById('r-grand').textContent = `P${grand.toFixed(2)}`;
+
+      document.getElementById('receipt').style.display = 'block';
+      document.getElementById('form-section').style.display = 'none';
+    }
+
+    function downloadPDF() {
+      const element = document.getElementById('receipt');
+      const button = element.querySelector('button');
+      button.style.display = 'none';
+
+      setTimeout(() => {
+        const opt = {
+          margin: 0.5,
+          filename: 'Abskd Receipt.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true },
+          jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+          pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+          button.style.display = 'block';
+          location.reload();
+        });
+      }, 200);
+    }
+  </script>
+</body>
+</html>
