@@ -7,7 +7,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     body {
-      font-family: 'Roboto',  monospace;
+      font-family: 'Roboto', monospace;
       margin: 0;
       padding: 20px;
       background: #f4f4f4;
@@ -199,7 +199,7 @@
 
       setTimeout(() => {
         const opt = {
-          margin: 0.5,
+          margin: [0.5, 0.5, 0.5, 0.5], // top, right, bottom, left
           filename: 'Abskd Receipt.pdf',
           image: { type: 'jpeg', quality: 0.98 },
           html2canvas: { scale: 2, useCORS: true },
@@ -207,13 +207,16 @@
           pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
         };
 
-        html2pdf().set(opt).from(element).save().then(() => {
-          button.style.display = 'block';
-          location.reload();
-        });
+        html2pdf()
+          .set(opt)
+          .from(element)
+          .save()
+          .then(() => {
+            button.style.display = 'block';
+            location.reload();
+          });
       }, 200);
     }
   </script>
 </body>
 </html>
-
