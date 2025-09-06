@@ -147,7 +147,7 @@
 
       <div class="total">
         <p><strong>Subtotal:</strong> <span id="r-subtotal"></span></p>
-        <p><strong>Fleet Fee (20%):</strong> <span id="r-tax"></span></p>
+        <p><strong>Fleet Fee (0%):</strong> <span id="r-tax"></span></p>
         <h3>Total: <span id="r-grand"></span></h3>
       </div>
 
@@ -174,7 +174,7 @@
       }
 
       const total = qty * cost;
-      const tax = total * 0.20;
+      const tax = total * 0.00;
       const grand = total + tax;
 
       document.getElementById('r-name').textContent = name;
@@ -216,3 +216,4 @@
   </script>
 </body>
 </html>
+
