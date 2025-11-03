@@ -3,91 +3,114 @@
 <head>
   <meta charset="UTF-8" />
   <title>ABSKD SPORTS & MEDIA</title>
-  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     body {
-      font-family: 'Roboto', monospace;
+      font-family: 'Roboto', sans-serif;
+      background: #f2f2f2;
       margin: 0;
-      padding: 20px;
-      background: #f4f4f4;
+      padding: 40px 0;
     }
+
     .container {
-      max-width: 850px;
-      margin: auto;
+      width: 794px; /* A4 width in px at 96dpi */
+      min-height: 1123px; /* A4 height */
       background: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 50px 60px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
     }
+
     h2 {
-      font-size: 24px;
+      font-size: 26px;
       margin-bottom: 10px;
     }
+
     .header {
-      border-bottom: 2px solid #b722a6;
+      border-bottom: 3px solid #b722a6;
       padding-bottom: 15px;
       margin-bottom: 25px;
     }
+
     .company-info {
-      font-size: 14px;
+      font-size: 15px;
+      line-height: 1.6;
     }
+
     .receipt-title {
       background: #b722a6;
       color: #fff;
-      padding: 12px;
+      padding: 15px;
       text-align: center;
       border-radius: 6px;
+      font-size: 18px;
       font-weight: bold;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
+
     .details {
       border: 1px dashed #ccc;
-      padding: 15px;
-      margin-bottom: 20px;
-      font-size: 14px;
+      padding: 20px;
+      margin-bottom: 30px;
+      font-size: 15px;
+      line-height: 1.6;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
+
     th, td {
       border: 1px solid #ccc;
-      padding: 10px;
+      padding: 12px;
+      font-size: 15px;
     }
+
     th {
       background: #b722a6;
       color: white;
     }
+
     .total {
       text-align: right;
-      font-size: 15px;
-      margin-top: 10px;
+      font-size: 16px;
+      margin-top: 20px;
+      line-height: 1.8;
     }
+
     .footer {
       text-align: center;
-      font-size: 14px;
-      margin-top: 30px;
+      font-size: 15px;
+      margin-top: 60px;
+      color: #444;
     }
+
     input {
       width: 100%;
-      padding: 8px;
-      margin: 6px 0;
+      padding: 10px;
+      margin: 8px 0;
       box-sizing: border-box;
-      font-family: 'Roboto', monospace;
+      font-size: 15px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
     }
+
     button {
-      padding: 10px 20px;
+      padding: 12px 24px;
       background: #b722a6;
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
-      font-family: 'Roboto', monospace;
+      font-size: 16px;
       font-weight: bold;
       margin-top: 10px;
     }
+
     button:hover {
       background-color: #850c3a;
     }
@@ -96,7 +119,7 @@
 <body>
   <div class="container">
     <div class="form-section" id="form-section">
-      <h2>Enter Receipt Details</h2>
+      <h2>Enter Customer Details</h2>
       <input type="text" id="customerName" placeholder="Customer Name" />
       <input type="text" id="transactionDate" placeholder="Transaction Date (e.g. July 30, 2025)" />
       <input type="text" id="teamName" placeholder="Team Name" />
@@ -113,7 +136,7 @@
           <p>
             Broadhurst Taung, 12725 Gaborone South-East BW<br />
             (267) 75573283<br />
-            abskdsolutions@gmail.com <br />
+            abskdsolutions@gmail.com<br />
             <a href="https://www.abskdsports.com" target="_blank">www.abskdsports.com</a>
           </p>
         </div>
@@ -149,12 +172,12 @@
       <div class="total">
         <p><strong>Subtotal:</strong> <span id="r-subtotal"></span></p>
         <p><strong>Fleet Fee (0%):</strong> <span id="r-tax"></span></p>
-        <h3>Total: <span id="r-grand"></span></h3>
+        <h3><strong>Total:</strong> <span id="r-grand"></span></h3>
       </div>
 
       <div class="footer">
         <p>Thanks for your business!</p>
-        <p>POWERED BY Abskd Software</p>
+        <p><strong>POWERED BY Abskd Software</strong></p>
         <button onclick="downloadImage()">Download</button>
       </div>
     </div>
@@ -199,12 +222,17 @@
       const button = receipt.querySelector('button');
       button.style.display = 'none';
 
-      // Get customer name safely for filename
       let customerName = document.getElementById('r-name').textContent.trim();
       if (!customerName) customerName = "Customer";
       const safeName = customerName.replace(/[^a-z0-9]/gi, "_");
 
-      html2canvas(receipt, { scale: 3, useCORS: true }).then(canvas => {
+      html2canvas(receipt, {
+        scale: 4, // higher quality
+        useCORS: true,
+        backgroundColor: "#fff",
+        width: 794,
+        height: 1123
+      }).then(canvas => {
         const link = document.createElement('a');
         link.download = `Abskd_Sports(${safeName}).jpg`;
         link.href = canvas.toDataURL('image/jpeg', 1.0);
