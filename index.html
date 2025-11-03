@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Receipt Generator - ABSKD Co.</title>
+  <title>ABSKD SPORTS & MEDIA</title>
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     body {
       font-family: 'Roboto', monospace;
@@ -103,22 +103,23 @@
       <input type="number" id="quantity" placeholder="Quantity" min="1" />
       <input type="text" id="description" placeholder="Description" />
       <input type="number" id="cost" placeholder="Cost per Item (Pula)" />
-      <button onclick="generateReceipt()">Generate Receipt</button>
+      <button onclick="generateReceipt()">Get Receipt</button>
     </div>
 
     <div id="receipt" style="display: none">
       <div class="header">
         <div class="company-info">
-          <h2>ABSKD Co | Sports and Media</h2>
-          <p>12725 Broadhurst, Gaborone, South-East BW<br />
-            (267) 77811544<br />
+          <h2>ABSKD Sports and Media</h2>
+          <p>
+            Broadhurst Taung, 12725 Gaborone South-East BW<br />
+            (267) 75573283<br />
             abskdsolutions@gmail.com <br />
-            <a href="https://abskdsolutions.carrd.co/">www.playhard.com</a>
+            <a href="https://www.abskdsports.com" target="_blank">www.abskdsports.com</a>
           </p>
         </div>
       </div>
 
-      <div class="receipt-title">Receipt/Quote</div>
+      <div class="receipt-title">Receipt / Quote</div>
 
       <div class="details">
         <strong>Date:</strong> <span id="r-date"></span><br />
@@ -153,8 +154,8 @@
 
       <div class="footer">
         <p>Thanks for your business!</p>
-        <p>POWERED BY ABSKD</p>
-        <button onclick="downloadPDF()">Download PDF</button>
+        <p>POWERED BY Abskd Software</p>
+        <button onclick="downloadImage()">Download</button>
       </div>
     </div>
   </div>
@@ -192,33 +193,27 @@
       document.getElementById('form-section').style.display = 'none';
     }
 
-    function downloadPDF() {
-      const element = document.getElementById('receipt');
-      const button = element.querySelector('button');
+    // DOWNLOAD RECEIPT AS IMAGE (JPG)
+    function downloadImage() {
+      const receipt = document.getElementById('receipt');
+      const button = receipt.querySelector('button');
       button.style.display = 'none';
 
-      setTimeout(() => {
-        const opt = {
-          margin: [0.5, 0.5, 0.5, 0.5], // top, right, bottom, left
-          filename: 'Abskd Receipt.pdf',
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true },
-          jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
-          pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-        };
+      // Get customer name safely for filename
+      let customerName = document.getElementById('r-name').textContent.trim();
+      if (!customerName) customerName = "Customer";
+      const safeName = customerName.replace(/[^a-z0-9]/gi, "_");
 
-        html2pdf()
-          .set(opt)
-          .from(element)
-          .save()
-          .then(() => {
-            button.style.display = 'block';
-            location.reload();
-          });
-      }, 200);
+      html2canvas(receipt, { scale: 3, useCORS: true }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `Abskd_Sports(${safeName}).jpg`;
+        link.href = canvas.toDataURL('image/jpeg', 1.0);
+        link.click();
+
+        button.style.display = 'block';
+        location.reload();
+      });
     }
   </script>
 </body>
 </html>
-
-
