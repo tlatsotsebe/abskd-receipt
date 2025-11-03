@@ -3,25 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <title>ABSKD SPORTS & MEDIA</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
+    /* 🎨 Font and Layout Fixes */
     body {
-      font-family: 'Roboto', sans-serif;
+      font-family: 'EB Garamond', serif; /* Changed font */
       background: #f2f2f2;
       margin: 0;
       padding: 40px 0;
     }
 
     .container {
-      width: 794px; /* A4 width in px at 96dpi */
-      min-height: 1123px; /* A4 height */
+      /* Adjusted width and padding for a less stretched look and to better fit typical A4 margins */
+      width: 700px; /* Slightly narrower than A4 at 96dpi to give better side margins */
+      min-height: 1000px; /* Adjusted height */
       background: #fff;
-      padding: 50px 60px;
-      margin: auto;
+      padding: 40px; /* Reduced padding to fix stretched feel */
+      margin: 20px auto; /* Added top/bottom margin for better centering */
       border-radius: 8px;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
     }
+
+    h2, h3, p, strong {
+        font-family: 'EB Garamond', serif; /* Explicitly set for all text elements */
+    }
+
+    /* General Styling */
 
     h2 {
       font-size: 26px;
@@ -80,6 +89,11 @@
       font-size: 16px;
       margin-top: 20px;
       line-height: 1.8;
+      padding-right: 12px; /* Align totals with table content */
+    }
+    
+    .total h3 {
+        padding-right: 0;
     }
 
     .footer {
@@ -99,6 +113,14 @@
       border: 1px solid #ccc;
     }
 
+    /* Download Buttons container */
+    .download-options {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 15px;
+    }
+
     button {
       padding: 12px 24px;
       background: #b722a6;
@@ -109,6 +131,7 @@
       font-size: 16px;
       font-weight: bold;
       margin-top: 10px;
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
@@ -178,12 +201,18 @@
       <div class="footer">
         <p>Thanks for your business!</p>
         <p><strong>POWERED BY Abskd Software</strong></p>
-        <button onclick="downloadImage()">Download</button>
+        <div class="download-options">
+            <button onclick="downloadImage()">Download as Image</button>
+            <button onclick="downloadPDF()">Download as PDF</button>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
+    // Include jsPDF from the window object for better compatibility
+    const { jsPDF } = window.jspdf;
+
     function generateReceipt() {
       const name = document.getElementById('customerName').value;
       const date = document.getElementById('transactionDate').value;
@@ -216,31 +245,76 @@
       document.getElementById('form-section').style.display = 'none';
     }
 
+    // Utility function to hide buttons before capture
+    function toggleDownloadButtons(show) {
+        const buttonsContainer = document.querySelector('.download-options');
+        if (buttonsContainer) {
+            buttonsContainer.style.display = show ? 'flex' : 'none';
+        }
+    }
+    
+    // Function to generate the filename
+    function generateFileName() {
+        let customerName = document.getElementById('r-name').textContent.trim();
+        if (!customerName) customerName = "Customer";
+        return `Abskd_Sports_${customerName.replace(/[^a-z0-9]/gi, "_")}`;
+    }
+
     // DOWNLOAD RECEIPT AS IMAGE (JPG)
     function downloadImage() {
       const receipt = document.getElementById('receipt');
-      const button = receipt.querySelector('button');
-      button.style.display = 'none';
-
-      let customerName = document.getElementById('r-name').textContent.trim();
-      if (!customerName) customerName = "Customer";
-      const safeName = customerName.replace(/[^a-z0-9]/gi, "_");
+      toggleDownloadButtons(false); // Hide buttons before capture
 
       html2canvas(receipt, {
-        scale: 4, // higher quality
+        scale: 2, // Higher quality but less demanding than scale: 4
         useCORS: true,
         backgroundColor: "#fff",
-        width: 794,
-        height: 1123
       }).then(canvas => {
         const link = document.createElement('a');
-        link.download = `Abskd_Sports(${safeName}).jpg`;
-        link.href = canvas.toDataURL('image/jpeg', 1.0);
+        link.download = `${generateFileName()}.jpg`;
+        link.href = canvas.toDataURL('image/jpeg', 0.9);
         link.click();
-
-        button.style.display = 'block';
-        location.reload();
+        
+        toggleDownloadButtons(true); // Show buttons after download
       });
+    }
+
+    // DOWNLOAD RECEIPT AS PDF
+    async function downloadPDF() {
+        const receipt = document.getElementById('receipt');
+        toggleDownloadButtons(false); // Hide buttons before capture
+
+        const canvas = await html2canvas(receipt, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: "#fff",
+        });
+
+        // Get the image data
+        const imgData = canvas.toDataURL('image/jpeg', 1.0);
+        const imgWidth = 210; // A4 width in mm
+        const pageHeight = 297; // A4 height in mm
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        let heightLeft = imgHeight;
+
+        // Create PDF
+        const doc = new jsPDF('p', 'mm', 'a4');
+        let position = 0;
+
+        // Add the image to the PDF
+        doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+
+        // Handle multi-page content (though unlikely for a receipt, it's good practice)
+        while (heightLeft >= 0) {
+            position = heightLeft - imgHeight;
+            doc.addPage();
+            doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+        }
+
+        doc.save(`${generateFileName()}.pdf`);
+        toggleDownloadButtons(true); // Show buttons after download
     }
   </script>
 </body>
