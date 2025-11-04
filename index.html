@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <title>ABSKD SPORTS & MEDIA</title>
-  <!-- Removed EB Garamond font link -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     /* 🎨 Font and Layout Fixes */
     body {
-      font-family: 'Helvetica', Arial, sans-serif; /* Changed to Helvetica */
+      font-family: 'Helvetica', Arial, sans-serif;
       background: #f2f2f2;
       margin: 0;
       padding: 40px 0;
@@ -26,7 +25,7 @@
     }
 
     h2, h3, p, strong {
-      font-family: 'Helvetica', Arial, sans-serif; /* Explicitly set for all text elements */
+      font-family: 'Helvetica', Arial, sans-serif;
     }
 
     h2 {
@@ -34,15 +33,34 @@
       margin-bottom: 10px;
     }
 
+    /* Centered Header Section */
     .header {
       border-bottom: 3px solid #b722a6;
       padding-bottom: 15px;
       margin-bottom: 25px;
+      text-align: center;
     }
 
     .company-info {
       font-size: 15px;
       line-height: 1.6;
+      text-align: center;
+    }
+
+    .company-info h2 {
+      margin-bottom: 8px;
+      font-size: 24px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .company-info a {
+      color: #b722a6;
+      text-decoration: none;
+    }
+
+    .company-info a:hover {
+      text-decoration: underline;
     }
 
     .receipt-title {
@@ -87,10 +105,6 @@
       margin-top: 20px;
       line-height: 1.8;
       padding-right: 12px;
-    }
-    
-    .total h3 {
-      padding-right: 0;
     }
 
     .footer {
