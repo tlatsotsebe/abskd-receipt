@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>PLAY SPORTS 2.0</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>PLAY SPORTS 3.0</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
@@ -17,12 +20,16 @@
     }
 
     .container {
-      width: 750px;
-      background: white;
+      width: 850px;
+      background: #fff;
       margin: auto;
       padding: 40px;
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    }
+
+    h2, h3 {
+      color: #b722a6;
     }
 
     .header {
@@ -32,103 +39,129 @@
       margin-bottom: 25px;
     }
 
-    .header h2 {
-      margin: 0;
-      color: #b722a6;
-    }
-
     .receipt-title {
       background: #b722a6;
       color: white;
-      text-align: center;
       padding: 12px;
       border-radius: 6px;
+      text-align: center;
       font-size: 20px;
       font-weight: bold;
       margin-bottom: 25px;
     }
 
-    input {
+    input, select {
+
       width: 100%;
       padding: 10px;
-      margin: 8px 0;
+      margin: 6px 0;
       border-radius: 5px;
       border: 1px solid #ccc;
       box-sizing: border-box;
+      font-size: 14px;
+
     }
 
     .item-row {
+
       display: grid;
-      grid-template-columns: 1fr 120px 150px;
+      grid-template-columns: 1.4fr 1fr 100px 120px;
       gap: 10px;
       margin-bottom: 10px;
       align-items: center;
+
     }
 
-    .item-name {
+    .item-title {
       font-weight: bold;
     }
 
     table {
+
       width: 100%;
       border-collapse: collapse;
       margin-top: 25px;
+
     }
 
     th, td {
+
       border: 1px solid #ccc;
       padding: 10px;
       text-align: center;
+
     }
 
     th {
+
       background: #b722a6;
       color: white;
+
     }
 
     .totals {
+
       margin-top: 25px;
       text-align: right;
       line-height: 2;
-      font-size: 16px;
+
     }
 
     .highlight-box {
-      background: #f8e6f5;
+
+      background: #f9e6f6;
       padding: 15px;
       border-radius: 8px;
       margin-top: 15px;
+
     }
 
     button {
+
       background: #b722a6;
       color: white;
       border: none;
       padding: 12px 20px;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 15px;
       margin-top: 15px;
+      font-size: 15px;
+
     }
 
     button:hover {
-      background: #8b1a82;
+
+      background: #8d1681;
+
     }
 
     .download-options {
+
       display: flex;
       justify-content: center;
       gap: 10px;
       margin-top: 20px;
+
     }
 
     .footer {
+
       margin-top: 50px;
       text-align: center;
-      font-size: 14px;
+
+    }
+
+    .delivery-box {
+
+      margin-top: 20px;
+      background: #f2f2f2;
+      padding: 12px;
+      border-radius: 6px;
+
     }
 
   </style>
+
 </head>
 
 <body>
@@ -150,7 +183,9 @@
 
     <div id="items-container"></div>
 
-    <button onclick="generateReceipt()">Generate Receipt</button>
+    <button onclick="generateReceipt()">
+      Generate Receipt
+    </button>
 
   </div>
 
@@ -170,32 +205,53 @@
 
     </div>
 
-    <div class="receipt-title">Receipt / Quote</div>
+    <div class="receipt-title">
+      Receipt / Quote
+    </div>
 
     <p><strong>Date:</strong> <span id="r-date"></span></p>
+
     <p><strong>Name:</strong> <span id="r-name"></span></p>
+
     <p><strong>Team:</strong> <span id="r-team"></span></p>
 
+    <!-- ITEMS TABLE -->
     <table>
 
       <thead>
+
         <tr>
+
           <th>Item</th>
+
+          <th>Category</th>
+
           <th>Qty</th>
+
           <th>Cost</th>
+
           <th>Total</th>
+
         </tr>
+
       </thead>
 
       <tbody id="receipt-items"></tbody>
 
     </table>
 
+    <!-- TOTALS -->
     <div class="totals">
 
-      <p><strong>Subtotal:</strong> <span id="r-subtotal"></span></p>
+      <p>
+        <strong>Subtotal:</strong>
+        <span id="r-subtotal"></span>
+      </p>
 
-      <p><strong>Total Amount Paid (100%):</strong> <span id="r-grand"></span></p>
+      <p>
+        <strong>Total Amount Paid (100%):</strong>
+        <span id="r-grand"></span>
+      </p>
 
       <div class="highlight-box">
 
@@ -209,20 +265,25 @@
           <span id="r-balance"></span>
         </p>
 
-        <p>
-          <strong>Delivery Time:</strong>
-          4 Weeks - 5 Weeks Maximum
-        </p>
+      </div>
+
+      <div class="delivery-box">
+
+        <strong>Delivery Time:</strong>
+        4 Weeks - 5 Weeks Maximum
 
       </div>
 
     </div>
 
+    <!-- FOOTER -->
     <div class="footer">
 
       <p>Thanks for your business!</p>
 
-      <p><strong>POWERED BY SECURE SOFT LABS (BW)</strong></p>
+      <p>
+        <strong>POWERED BY SECURE SOFT LABS (BW)</strong>
+      </p>
 
       <div class="download-options">
 
@@ -246,7 +307,9 @@
 
   const { jsPDF } = window.jspdf;
 
+  // PRODUCTS
   const items = [
+
     "V-Neck / Round Neck T-Shirt",
     "Golf T-Shirt",
     "Bucket Hat",
@@ -258,28 +321,44 @@
     "Telescopic",
     "Gazebo",
     "Stretch Tent"
+
   ];
 
-  const container = document.getElementById("items-container");
+  const container =
+    document.getElementById("items-container");
 
-  // CREATE ITEM INPUTS
+  // GENERATE ITEM INPUTS
   items.forEach((item, index) => {
 
     container.innerHTML += `
 
       <div class="item-row">
 
-        <div class="item-name">${item}</div>
+        <div class="item-title">
+          ${item}
+        </div>
 
-        <input 
-          type="number" 
+        <select id="type-${index}">
+
+          <option value="Adult">
+            Adult
+          </option>
+
+          <option value="Kids">
+            Kids
+          </option>
+
+        </select>
+
+        <input
+          type="number"
           min="0"
           placeholder="Qty"
           id="qty-${index}"
         >
 
-        <input 
-          type="number" 
+        <input
+          type="number"
           min="0"
           placeholder="Cost"
           id="cost-${index}"
@@ -293,15 +372,21 @@
 
   function generateReceipt() {
 
-    const name = document.getElementById("customerName").value;
+    const name =
+      document.getElementById("customerName").value;
 
-    const date = document.getElementById("transactionDate").value;
+    const date =
+      document.getElementById("transactionDate").value;
 
-    const team = document.getElementById("teamName").value;
+    const team =
+      document.getElementById("teamName").value;
 
     if (!name || !date || !team) {
+
       alert("Please fill customer details.");
+
       return;
+
     }
 
     let subtotal = 0;
@@ -310,11 +395,27 @@
 
     items.forEach((item, index) => {
 
-      const qty =
-        parseFloat(document.getElementById(`qty-${index}`).value) || 0;
+      const type =
+        document.getElementById(`type-${index}`).value;
 
-      const cost =
-        parseFloat(document.getElementById(`cost-${index}`).value) || 0;
+      const qty =
+        parseFloat(
+          document.getElementById(`qty-${index}`).value
+        ) || 0;
+
+      let cost =
+        parseFloat(
+          document.getElementById(`cost-${index}`).value
+        ) || 0;
+
+      // KIDS DISCOUNT
+      // Automatically reduce kids cost by 20%
+
+      if (type === "Kids") {
+
+        cost = cost * 0.80;
+
+      }
 
       // ONLY INCLUDE FILLED ITEMS
       if (qty > 0 && cost > 0) {
@@ -329,6 +430,8 @@
 
             <td>${item}</td>
 
+            <td>${type}</td>
+
             <td>${qty}</td>
 
             <td>P${cost.toFixed(2)}</td>
@@ -338,13 +441,17 @@
           </tr>
 
         `;
+
       }
 
     });
 
     if (subtotal <= 0) {
+
       alert("Please add at least one item.");
+
       return;
+
     }
 
     // CALCULATIONS
@@ -352,14 +459,15 @@
 
     const balance = subtotal * 0.30;
 
-    // SET RECEIPT
+    // RECEIPT DETAILS
     document.getElementById("r-name").textContent = name;
 
     document.getElementById("r-date").textContent = date;
 
     document.getElementById("r-team").textContent = team;
 
-    document.getElementById("receipt-items").innerHTML = receiptHTML;
+    document.getElementById("receipt-items").innerHTML =
+      receiptHTML;
 
     document.getElementById("r-subtotal").textContent =
       `P${subtotal.toFixed(2)}`;
@@ -373,12 +481,15 @@
     document.getElementById("r-balance").textContent =
       `P${balance.toFixed(2)}`;
 
-    document.getElementById("form-section").style.display = "none";
+    document.getElementById("form-section").style.display =
+      "none";
 
-    document.getElementById("receipt").style.display = "block";
+    document.getElementById("receipt").style.display =
+      "block";
 
   }
 
+  // HIDE BUTTONS DURING EXPORT
   function toggleDownloadButtons(show) {
 
     const buttons =
@@ -388,6 +499,7 @@
 
   }
 
+  // FILE NAME
   function generateFileName() {
 
     let customer =
@@ -397,22 +509,29 @@
 
   }
 
+  // DOWNLOAD IMAGE
   function downloadImage() {
 
-    const receipt = document.getElementById("receipt");
+    const receipt =
+      document.getElementById("receipt");
 
     toggleDownloadButtons(false);
 
     html2canvas(receipt, {
+
       scale: 2,
       backgroundColor: "#ffffff"
+
     }).then(canvas => {
 
-      const link = document.createElement("a");
+      const link =
+        document.createElement("a");
 
-      link.download = `${generateFileName()}.jpg`;
+      link.download =
+        `${generateFileName()}.jpg`;
 
-      link.href = canvas.toDataURL("image/jpeg", 1);
+      link.href =
+        canvas.toDataURL("image/jpeg", 1);
 
       link.click();
 
@@ -422,20 +541,26 @@
 
   }
 
+  // DOWNLOAD PDF
   async function downloadPDF() {
 
-    const receipt = document.getElementById("receipt");
+    const receipt =
+      document.getElementById("receipt");
 
     toggleDownloadButtons(false);
 
     const canvas = await html2canvas(receipt, {
+
       scale: 2,
       backgroundColor: "#ffffff"
+
     });
 
-    const imgData = canvas.toDataURL("image/jpeg", 1);
+    const imgData =
+      canvas.toDataURL("image/jpeg", 1);
 
-    const pdf = new jsPDF("p", "mm", "a4");
+    const pdf =
+      new jsPDF("p", "mm", "a4");
 
     const imgWidth = 210;
 
@@ -443,12 +568,14 @@
       canvas.height * imgWidth / canvas.width;
 
     pdf.addImage(
+
       imgData,
       "JPEG",
       0,
       0,
       imgWidth,
       imgHeight
+
     );
 
     pdf.save(`${generateFileName()}.pdf`);
