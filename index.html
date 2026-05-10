@@ -58,16 +58,28 @@
       font-size: 14px;
     }
 
+    .item-group {
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+
     .item-row {
       display: grid;
       grid-template-columns: 1.4fr 1fr 100px 120px;
       gap: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
       align-items: center;
     }
 
     .item-title {
       font-weight: bold;
+    }
+
+    .category-label {
+      font-size: 12px;
+      color: #666;
+      font-style: italic;
     }
 
     table {
@@ -233,7 +245,7 @@
 <script>
   const { jsPDF } = window.jspdf;
 
-  // PRODUCTS
+  // ALL PRODUCTS
   const items = [
     "V-Neck / Round Neck T-Shirt",
     "Golf T-Shirt",
@@ -248,8 +260,8 @@
     "Stretch Tent"
   ];
 
-  // List of items that should have Adult/Kids features
-  const itemsWithKidsAdults = [
+  // Items that need both Kids and Adult price inputs simultaneously
+  const dualCategoryItems = [
     "V-Neck / Round Neck T-Shirt",
     "Golf T-Shirt",
     "Tracksuit 2 Piece",
@@ -262,25 +274,43 @@
 
   // GENERATE ITEM INPUTS
   items.forEach((item, index) => {
-    const isClothing = itemsWithKidsAdults.includes(item);
+    const isDual = dualCategoryItems.includes(item);
     
-    container.innerHTML += `
-      <div class="item-row">
-        <div class="item-title">
-          ${item}
+    let html = `<div class="item-group">`;
+    
+    if (isDual) {
+      // Adults Row
+      html += `
+        <div class="item-row">
+          <div class="item-title">${item} <span class="category-label">(Adult)</span></div>
+          <input type="hidden" id="type-adult-${index}" value="Adult">
+          <div></div> <!-- Spacer -->
+          <input type="number" min="0" placeholder="Qty" id="qty-adult-${index}">
+          <input type="number" min="0" placeholder="Cost" id="cost-adult-${index}">
         </div>
-        <select id="type-${index}" ${!isClothing ? 'disabled' : ''}>
-          ${isClothing ? `
-            <option value="Adult">Adult</option>
-            <option value="Kids">Kids</option>
-          ` : `
-            <option value="Standard">Standard</option>
-          `}
-        </select>
-        <input type="number" min="0" placeholder="Qty" id="qty-${index}">
-        <input type="number" min="0" placeholder="Cost" id="cost-${index}">
-      </div>
-    `;
+        <div class="item-row">
+          <div class="item-title">${item} <span class="category-label">(Kids)</span></div>
+          <input type="hidden" id="type-kids-${index}" value="Kids">
+          <div></div> <!-- Spacer -->
+          <input type="number" min="0" placeholder="Qty" id="qty-kids-${index}">
+          <input type="number" min="0" placeholder="Cost" id="cost-kids-${index}">
+        </div>
+      `;
+    } else {
+      // Standard Single Row (for Hats, Tents, etc.)
+      html += `
+        <div class="item-row">
+          <div class="item-title">${item}</div>
+          <input type="hidden" id="type-${index}" value="Standard">
+          <div></div> <!-- Spacer -->
+          <input type="number" min="0" placeholder="Qty" id="qty-${index}">
+          <input type="number" min="0" placeholder="Cost" id="cost-${index}">
+        </div>
+      `;
+    }
+    
+    html += `</div>`;
+    container.innerHTML += html;
   });
 
   function generateReceipt() {
@@ -297,28 +327,33 @@
     let receiptHTML = "";
 
     items.forEach((item, index) => {
-      const type = document.getElementById(`type-${index}`).value;
-      const qty = parseFloat(document.getElementById(`qty-${index}`).value) || 0;
-      let cost = parseFloat(document.getElementById(`cost-${index}`).value) || 0;
+      if (dualCategoryItems.includes(item)) {
+        // Handle Adult input
+        const qAdult = parseFloat(document.getElementById(`qty-adult-${index}`).value) || 0;
+        const cAdult = parseFloat(document.getElementById(`cost-adult-${index}`).value) || 0;
+        if (qAdult > 0 && cAdult > 0) {
+          const total = qAdult * cAdult;
+          subtotal += total;
+          receiptHTML += `<tr><td>${item}</td><td>Adult</td><td>${qAdult}</td><td>P${cAdult.toFixed(2)}</td><td>P${total.toFixed(2)}</td></tr>`;
+        }
 
-      // Only apply Kids Discount (20% off) for specific items listed
-      if (itemsWithKidsAdults.includes(item) && type === "Kids") {
-        cost = cost * 0.80;
-      }
-
-      if (qty > 0 && cost > 0) {
-        const total = qty * cost;
-        subtotal += total;
-
-        receiptHTML += `
-          <tr>
-            <td>${item}</td>
-            <td>${type}</td>
-            <td>${qty}</td>
-            <td>P${cost.toFixed(2)}</td>
-            <td>P${total.toFixed(2)}</td>
-          </tr>
-        `;
+        // Handle Kids input
+        const qKids = parseFloat(document.getElementById(`qty-kids-${index}`).value) || 0;
+        const cKids = parseFloat(document.getElementById(`cost-kids-${index}`).value) || 0;
+        if (qKids > 0 && cKids > 0) {
+          const total = qKids * cKids;
+          subtotal += total;
+          receiptHTML += `<tr><td>${item}</td><td>Kids</td><td>${qKids}</td><td>P${cKids.toFixed(2)}</td><td>P${total.toFixed(2)}</td></tr>`;
+        }
+      } else {
+        // Handle Standard input
+        const qty = parseFloat(document.getElementById(`qty-${index}`).value) || 0;
+        const cost = parseFloat(document.getElementById(`cost-${index}`).value) || 0;
+        if (qty > 0 && cost > 0) {
+          const total = qty * cost;
+          subtotal += total;
+          receiptHTML += `<tr><td>${item}</td><td>Standard</td><td>${qty}</td><td>P${cost.toFixed(2)}</td><td>P${total.toFixed(2)}</td></tr>`;
+        }
       }
     });
 
