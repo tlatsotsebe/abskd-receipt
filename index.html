@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>PLAY SPORTS 1.0</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>PLAY SPORTS 4.0</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -11,176 +13,165 @@
   <style>
 
     body {
-      font-family: 'Helvetica', Arial, sans-serif;
+      font-family: Arial, sans-serif;
       background: #f2f2f2;
       margin: 0;
       padding: 40px 0;
     }
 
     .container {
-      width: 900px;
-      min-height: 1000px;
+      width: 950px;
       background: #fff;
+      margin: auto;
       padding: 40px;
-      margin: 20px auto;
-      border-radius: 8px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.15);
     }
 
-    h2, h3, p, strong {
-      font-family: 'Helvetica', Arial, sans-serif;
-    }
-
-    h2 {
-      font-size: 26px;
-      margin-bottom: 10px;
+    h2, h3 {
+      color: #b722a6;
     }
 
     .header {
+      text-align: center;
       border-bottom: 3px solid #b722a6;
       padding-bottom: 15px;
       margin-bottom: 25px;
-      text-align: center;
-    }
-
-    .company-info {
-      font-size: 15px;
-      line-height: 1.6;
-      text-align: center;
-    }
-
-    .company-info h2 {
-      margin-bottom: 8px;
-      font-size: 24px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .company-info a {
-      color: #b722a6;
-      text-decoration: none;
     }
 
     .receipt-title {
       background: #b722a6;
-      color: #fff;
-      padding: 15px;
+      color: white;
+      padding: 12px;
+      border-radius: 6px;
       text-align: center;
-      border-radius: 6px;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: bold;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
 
-    .details {
-      border: 1px dashed #ccc;
-      padding: 20px;
-      margin-bottom: 30px;
-      font-size: 15px;
-      line-height: 1.6;
+    input {
+
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 14px;
+
     }
 
-    .product-section {
-      border: 1px solid #ddd;
-      padding: 15px;
-      margin-bottom: 20px;
-      border-radius: 6px;
-      background: #fafafa;
-    }
+    .item-row {
 
-    .product-section h3 {
-      margin-top: 0;
-      color: #b722a6;
-    }
-
-    .product-grid {
       display: grid;
-      grid-template-columns: 1fr 120px 120px 120px 120px;
+      grid-template-columns: 1.5fr 120px 120px 120px 120px;
       gap: 10px;
+      margin-bottom: 10px;
       align-items: center;
+
     }
 
-    .product-grid label {
+    .item-title {
       font-weight: bold;
     }
 
     table {
+
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 30px;
+      margin-top: 25px;
+
     }
 
     th, td {
+
       border: 1px solid #ccc;
-      padding: 12px;
-      font-size: 15px;
+      padding: 10px;
       text-align: center;
+
     }
 
     th {
+
       background: #b722a6;
       color: white;
+
     }
 
-    .total {
+    .totals {
+
+      margin-top: 25px;
       text-align: right;
-      font-size: 16px;
-      margin-top: 20px;
-      line-height: 1.8;
-      padding-right: 12px;
+      line-height: 2;
+
     }
 
     .highlight-box {
-      background: #f9e6f5;
+
+      background: #f9e6f6;
       padding: 15px;
       border-radius: 8px;
       margin-top: 15px;
-    }
 
-    .footer {
-      text-align: center;
-      font-size: 15px;
-      margin-top: 60px;
-      color: #444;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      box-sizing: border-box;
-      font-size: 15px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      font-family: 'Helvetica', Arial, sans-serif;
-    }
-
-    .download-options {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 15px;
     }
 
     button {
-      padding: 12px 24px;
+
       background: #b722a6;
       color: white;
       border: none;
+      padding: 12px 20px;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-      margin-top: 10px;
-      transition: background-color 0.3s ease;
-      font-family: 'Helvetica', Arial, sans-serif;
+      margin-top: 15px;
+      font-size: 15px;
+
     }
 
     button:hover {
-      background-color: #850c3a;
+
+      background: #8d1681;
+
+    }
+
+    .download-options {
+
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+
+    }
+
+    .footer {
+
+      margin-top: 50px;
+      text-align: center;
+
+    }
+
+    .delivery-box {
+
+      margin-top: 20px;
+      background: #f2f2f2;
+      padding: 12px;
+      border-radius: 6px;
+
+    }
+
+    .labels {
+
+      display: grid;
+      grid-template-columns: 1.5fr 120px 120px 120px 120px;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-weight: bold;
+
     }
 
   </style>
+
 </head>
 
 <body>
@@ -188,47 +179,53 @@
 <div class="container">
 
   <!-- FORM -->
-  <div class="form-section" id="form-section">
+  <div id="form-section">
 
-    <h2>Enter Customer Details</h2>
+    <h2>Customer Details</h2>
 
-    <input type="text" id="customerName" placeholder="Customer Name" />
+    <input type="text" id="customerName" placeholder="Customer Name">
 
-    <input type="text" id="transactionDate" placeholder="Transaction Date (e.g. July 30, 2025)" />
+    <input type="text" id="transactionDate" placeholder="Transaction Date">
 
-    <input type="text" id="teamName" placeholder="Team Name" />
+    <input type="text" id="teamName" placeholder="Team Name">
 
-    <!-- PRODUCTS -->
+    <h3>Items Sold</h3>
 
-    <div id="products-container"></div>
+    <div class="labels">
+
+      <div>Item</div>
+
+      <div>Adult Qty</div>
+
+      <div>Adult Cost</div>
+
+      <div>Kids Qty</div>
+
+      <div>Kids Cost</div>
+
+    </div>
+
+    <div id="items-container"></div>
 
     <button onclick="generateReceipt()">
-      Get Receipt
+      Generate Receipt
     </button>
 
   </div>
 
   <!-- RECEIPT -->
-  <div id="receipt" style="display: none">
+  <div id="receipt" style="display:none;">
 
     <div class="header">
 
-      <div class="company-info">
+      <h2>PLAY SPORTS (Abskd Co.)</h2>
 
-        <h2>PLAY SPORTS (Abskd Co.)</h2>
-
-        <p>
-          Mogoditshane Nkoyaphiri, Gaborone South-East BW<br />
-          (267) 75573283 / 72692829<br />
-          playsports@gmail.com<br />
-
-          <a href="https://www.abskdsports.com" target="_blank">
-            www.playsports.com
-          </a>
-
-        </p>
-
-      </div>
+      <p>
+        Mogoditshane Nkoyaphiri, Gaborone South-East BW<br>
+        (267) 75573283 / 72692829<br>
+        playsports@gmail.com<br>
+        www.playsports.com
+      </p>
 
     </div>
 
@@ -236,18 +233,11 @@
       Receipt / Quote
     </div>
 
-    <div class="details">
+    <p><strong>Date:</strong> <span id="r-date"></span></p>
 
-      <strong>Date:</strong>
-      <span id="r-date"></span><br />
+    <p><strong>Name:</strong> <span id="r-name"></span></p>
 
-      <strong>Name:</strong>
-      <span id="r-name"></span><br />
-
-      <strong>Team:</strong>
-      <span id="r-team"></span>
-
-    </div>
+    <p><strong>Team:</strong> <span id="r-team"></span></p>
 
     <!-- TABLE -->
     <table>
@@ -256,36 +246,36 @@
 
         <tr>
 
-          <th>Description</th>
+          <th>Item</th>
 
           <th>Category</th>
 
           <th>Qty</th>
 
-          <th>Cost (P)</th>
+          <th>Cost</th>
 
-          <th>Total (P)</th>
+          <th>Total</th>
 
         </tr>
 
       </thead>
 
-      <tbody id="receipt-body"></tbody>
+      <tbody id="receipt-items"></tbody>
 
     </table>
 
     <!-- TOTALS -->
-    <div class="total">
+    <div class="totals">
 
       <p>
         <strong>Subtotal:</strong>
         <span id="r-subtotal"></span>
       </p>
 
-      <h3>
+      <p>
         <strong>Total Amount Paid (100%):</strong>
         <span id="r-grand"></span>
-      </h3>
+      </p>
 
       <div class="highlight-box">
 
@@ -299,10 +289,12 @@
           <span id="r-balance"></span>
         </p>
 
-        <p>
-          <strong>Delivery Time:</strong>
-          4 Weeks - 5 Weeks Maximum
-        </p>
+      </div>
+
+      <div class="delivery-box">
+
+        <strong>Delivery Time:</strong>
+        4 Weeks - 5 Weeks Maximum
 
       </div>
 
@@ -320,11 +312,11 @@
       <div class="download-options">
 
         <button onclick="downloadImage()">
-          Download as Image
+          Download Image
         </button>
 
         <button onclick="downloadPDF()">
-          Download as PDF
+          Download PDF
         </button>
 
       </div>
@@ -340,91 +332,128 @@
   const { jsPDF } = window.jspdf;
 
   // ALL ITEMS
-  const products = [
+  const items = [
 
-    "V-Neck / Round Neck T-Shirt",
-    "Golf T-Shirt",
-    "Bucket Hat",
-    "Tracksuit 2 Piece",
-    "Track Top",
-    "Track Pants",
-    "Windbreaker",
-    "Vest",
-    "Telescopic",
-    "Gazebo",
-    "Stretch Tent"
+    {
+      name: "V-Neck / Round Neck T-Shirt",
+      kids: true
+    },
+
+    {
+      name: "Golf T-Shirt",
+      kids: true
+    },
+
+    {
+      name: "Bucket Hat",
+      kids: false
+    },
+
+    {
+      name: "Tracksuit 2 Piece",
+      kids: true
+    },
+
+    {
+      name: "Track Top",
+      kids: false
+    },
+
+    {
+      name: "Track Pants",
+      kids: false
+    },
+
+    {
+      name: "Windbreaker",
+      kids: true
+    },
+
+    {
+      name: "Vest",
+      kids: false
+    },
+
+    {
+      name: "Telescopic",
+      kids: false
+    },
+
+    {
+      name: "Gazebo",
+      kids: false
+    },
+
+    {
+      name: "Stretch Tent",
+      kids: false
+    }
 
   ];
 
-  const productsContainer =
-    document.getElementById("products-container");
+  const container =
+    document.getElementById("items-container");
 
-  // CREATE PRODUCT INPUTS
-  products.forEach((product, index) => {
+  // CREATE FORM ROWS
+  items.forEach((item, index) => {
 
-    const kidsAllowed =
-      product.includes("T-Shirt") ||
-      product.includes("Tracksuit") ||
-      product.includes("Windbreaker");
+    container.innerHTML += `
 
-    productsContainer.innerHTML += `
+      <div class="item-row">
 
-      <div class="product-section">
-
-        <h3>${product}</h3>
-
-        <div class="product-grid">
-
-          <label>Adult Qty</label>
-
-          <input
-            type="number"
-            min="0"
-            id="adultQty-${index}"
-            placeholder="0"
-          >
-
-          <label>Adult Cost</label>
-
-          <input
-            type="number"
-            min="0"
-            id="adultCost-${index}"
-            placeholder="0"
-          >
-
-          ${
-            kidsAllowed ? `
-
-            <label>Kids Qty</label>
-
-            <input
-              type="number"
-              min="0"
-              id="kidsQty-${index}"
-              placeholder="0"
-            >
-
-            <label>Kids Cost</label>
-
-            <input
-              type="number"
-              min="0"
-              id="kidsCost-${index}"
-              placeholder="0"
-            >
-
-            ` : `
-
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-
-            `
-          }
-
+        <div class="item-title">
+          ${item.name}
         </div>
+
+        <!-- ADULT -->
+        <input
+          type="number"
+          min="0"
+          placeholder="Adult Qty"
+          id="adultQty-${index}"
+        >
+
+        <input
+          type="number"
+          min="0"
+          placeholder="Adult Cost"
+          id="adultCost-${index}"
+        >
+
+        <!-- KIDS -->
+        ${
+          item.kids
+          ?
+          `
+          <input
+            type="number"
+            min="0"
+            placeholder="Kids Qty"
+            id="kidsQty-${index}"
+          >
+
+          <input
+            type="number"
+            min="0"
+            placeholder="Kids Cost"
+            id="kidsCost-${index}"
+          >
+          `
+          :
+          `
+          <input
+            type="text"
+            value="N/A"
+            disabled
+          >
+
+          <input
+            type="text"
+            value="N/A"
+            disabled
+          >
+          `
+        }
 
       </div>
 
@@ -436,17 +465,17 @@
   function generateReceipt() {
 
     const name =
-      document.getElementById('customerName').value;
+      document.getElementById("customerName").value;
 
     const date =
-      document.getElementById('transactionDate').value;
+      document.getElementById("transactionDate").value;
 
     const team =
-      document.getElementById('teamName').value;
+      document.getElementById("teamName").value;
 
     if (!name || !date || !team) {
 
-      alert('Please fill in customer details.');
+      alert("Please fill customer details.");
 
       return;
 
@@ -456,9 +485,9 @@
 
     let receiptHTML = "";
 
-    products.forEach((product, index) => {
+    items.forEach((item, index) => {
 
-      // ADULTS
+      // ADULT
       const adultQty =
         parseFloat(
           document.getElementById(`adultQty-${index}`).value
@@ -469,6 +498,25 @@
           document.getElementById(`adultCost-${index}`).value
         ) || 0;
 
+      // KIDS
+      let kidsQty = 0;
+      let kidsCost = 0;
+
+      if (item.kids) {
+
+        kidsQty =
+          parseFloat(
+            document.getElementById(`kidsQty-${index}`).value
+          ) || 0;
+
+        kidsCost =
+          parseFloat(
+            document.getElementById(`kidsCost-${index}`).value
+          ) || 0;
+
+      }
+
+      // ADULT ROW
       if (adultQty > 0 && adultCost > 0) {
 
         const adultTotal =
@@ -480,7 +528,7 @@
 
           <tr>
 
-            <td>${product}</td>
+            <td>${item.name}</td>
 
             <td>Adult</td>
 
@@ -496,47 +544,31 @@
 
       }
 
-      // KIDS
-      const kidsQtyInput =
-        document.getElementById(`kidsQty-${index}`);
+      // KIDS ROW
+      if (kidsQty > 0 && kidsCost > 0) {
 
-      const kidsCostInput =
-        document.getElementById(`kidsCost-${index}`);
+        const kidsTotal =
+          kidsQty * kidsCost;
 
-      if (kidsQtyInput && kidsCostInput) {
+        subtotal += kidsTotal;
 
-        const kidsQty =
-          parseFloat(kidsQtyInput.value) || 0;
+        receiptHTML += `
 
-        const kidsCost =
-          parseFloat(kidsCostInput.value) || 0;
+          <tr>
 
-        if (kidsQty > 0 && kidsCost > 0) {
+            <td>${item.name}</td>
 
-          const kidsTotal =
-            kidsQty * kidsCost;
+            <td>Kids</td>
 
-          subtotal += kidsTotal;
+            <td>${kidsQty}</td>
 
-          receiptHTML += `
+            <td>P${kidsCost.toFixed(2)}</td>
 
-            <tr>
+            <td>P${kidsTotal.toFixed(2)}</td>
 
-              <td>${product}</td>
+          </tr>
 
-              <td>Kids</td>
-
-              <td>${kidsQty}</td>
-
-              <td>P${kidsCost.toFixed(2)}</td>
-
-              <td>P${kidsTotal.toFixed(2)}</td>
-
-            </tr>
-
-          `;
-
-        }
+        `;
 
       }
 
@@ -544,7 +576,7 @@
 
     if (subtotal <= 0) {
 
-      alert("Please enter at least one product.");
+      alert("Please add at least one item.");
 
       return;
 
@@ -557,67 +589,58 @@
     const balance =
       subtotal * 0.30;
 
-    // SET RECEIPT VALUES
-    document.getElementById('r-name').textContent =
+    // SET RECEIPT
+    document.getElementById("r-name").textContent =
       name;
 
-    document.getElementById('r-date').textContent =
+    document.getElementById("r-date").textContent =
       date;
 
-    document.getElementById('r-team').textContent =
+    document.getElementById("r-team").textContent =
       team;
 
-    document.getElementById('receipt-body').innerHTML =
+    document.getElementById("receipt-items").innerHTML =
       receiptHTML;
 
-    document.getElementById('r-subtotal').textContent =
+    document.getElementById("r-subtotal").textContent =
       `P${subtotal.toFixed(2)}`;
 
-    document.getElementById('r-grand').textContent =
+    document.getElementById("r-grand").textContent =
       `P${subtotal.toFixed(2)}`;
 
-    document.getElementById('r-deposit').textContent =
+    document.getElementById("r-deposit").textContent =
       `P${deposit.toFixed(2)}`;
 
-    document.getElementById('r-balance').textContent =
+    document.getElementById("r-balance").textContent =
       `P${balance.toFixed(2)}`;
 
     // SHOW RECEIPT
-    document.getElementById('receipt').style.display =
-      'block';
+    document.getElementById("form-section").style.display =
+      "none";
 
-    document.getElementById('form-section').style.display =
-      'none';
+    document.getElementById("receipt").style.display =
+      "block";
 
   }
 
   // TOGGLE BUTTONS
   function toggleDownloadButtons(show) {
 
-    const buttonsContainer =
-      document.querySelector('.download-options');
+    const buttons =
+      document.querySelector(".download-options");
 
-    if (buttonsContainer) {
-
-      buttonsContainer.style.display =
-        show ? 'flex' : 'none';
-
-    }
+    buttons.style.display =
+      show ? "flex" : "none";
 
   }
 
   // FILE NAME
   function generateFileName() {
 
-    let customerName =
-      document.getElementById('r-name')
-      .textContent
-      .trim();
+    let customer =
+      document.getElementById("r-name").textContent;
 
-    if (!customerName)
-      customerName = "Customer";
-
-    return `PlaySports_${customerName.replace(/[^a-z0-9]/gi, "_")}`;
+    return `PLAYSPORTS_${customer.replace(/[^a-z0-9]/gi, "_")}`;
 
   }
 
@@ -625,26 +648,25 @@
   function downloadImage() {
 
     const receipt =
-      document.getElementById('receipt');
+      document.getElementById("receipt");
 
     toggleDownloadButtons(false);
 
     html2canvas(receipt, {
 
       scale: 2,
-      useCORS: true,
-      backgroundColor: "#fff",
+      backgroundColor: "#ffffff"
 
     }).then(canvas => {
 
       const link =
-        document.createElement('a');
+        document.createElement("a");
 
       link.download =
         `${generateFileName()}.jpg`;
 
       link.href =
-        canvas.toDataURL('image/jpeg', 0.9);
+        canvas.toDataURL("image/jpeg", 1);
 
       link.click();
 
@@ -658,7 +680,7 @@
   async function downloadPDF() {
 
     const receipt =
-      document.getElementById('receipt');
+      document.getElementById("receipt");
 
     toggleDownloadButtons(false);
 
@@ -666,60 +688,33 @@
       await html2canvas(receipt, {
 
         scale: 2,
-        useCORS: true,
-        backgroundColor: "#fff",
+        backgroundColor: "#ffffff"
 
       });
 
     const imgData =
-      canvas.toDataURL('image/jpeg', 1.0);
+      canvas.toDataURL("image/jpeg", 1);
+
+    const pdf =
+      new jsPDF("p", "mm", "a4");
 
     const imgWidth = 210;
-
-    const pageHeight = 297;
 
     const imgHeight =
       canvas.height * imgWidth / canvas.width;
 
-    let heightLeft = imgHeight;
+    pdf.addImage(
 
-    const doc =
-      new jsPDF('p', 'mm', 'a4');
-
-    let position = 0;
-
-    doc.addImage(
       imgData,
-      'JPEG',
+      "JPEG",
       0,
-      position,
+      0,
       imgWidth,
       imgHeight
+
     );
 
-    heightLeft -= pageHeight;
-
-    while (heightLeft >= 0) {
-
-      position =
-        heightLeft - imgHeight;
-
-      doc.addPage();
-
-      doc.addImage(
-        imgData,
-        'JPEG',
-        0,
-        position,
-        imgWidth,
-        imgHeight
-      );
-
-      heightLeft -= pageHeight;
-
-    }
-
-    doc.save(`${generateFileName()}.pdf`);
+    pdf.save(`${generateFileName()}.pdf`);
 
     toggleDownloadButtons(true);
 
