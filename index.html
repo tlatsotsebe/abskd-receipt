@@ -2,96 +2,82 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>PLAY SPORTS 1.0</title>
+  <title>PLAY SPORTS 2.0</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
+
     body {
-      font-family: 'Helvetica', Arial, sans-serif;
+      font-family: Arial, sans-serif;
       background: #f2f2f2;
       margin: 0;
       padding: 40px 0;
     }
 
     .container {
-      width: 700px;
-      min-height: 1000px;
-      background: #fff;
+      width: 750px;
+      background: white;
+      margin: auto;
       padding: 40px;
-      margin: 20px auto;
-      border-radius: 8px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
-    }
-
-    h2, h3, p, strong {
-      font-family: 'Helvetica', Arial, sans-serif;
-    }
-
-    h2 {
-      font-size: 26px;
-      margin-bottom: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.15);
     }
 
     .header {
+      text-align: center;
       border-bottom: 3px solid #b722a6;
       padding-bottom: 15px;
       margin-bottom: 25px;
-      text-align: center;
     }
 
-    .company-info {
-      font-size: 15px;
-      line-height: 1.6;
-      text-align: center;
-    }
-
-    .company-info h2 {
-      margin-bottom: 8px;
-      font-size: 24px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .company-info a {
+    .header h2 {
+      margin: 0;
       color: #b722a6;
-      text-decoration: none;
-    }
-
-    .company-info a:hover {
-      text-decoration: underline;
     }
 
     .receipt-title {
       background: #b722a6;
-      color: #fff;
-      padding: 15px;
+      color: white;
       text-align: center;
+      padding: 12px;
       border-radius: 6px;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: bold;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
 
-    .details {
-      border: 1px dashed #ccc;
-      padding: 20px;
-      margin-bottom: 30px;
-      font-size: 15px;
-      line-height: 1.6;
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: 1fr 120px 150px;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .item-name {
+      font-weight: bold;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 30px;
+      margin-top: 25px;
     }
 
     th, td {
       border: 1px solid #ccc;
-      padding: 12px;
-      font-size: 15px;
+      padding: 10px;
       text-align: center;
     }
 
@@ -100,74 +86,48 @@
       color: white;
     }
 
-    .total {
+    .totals {
+      margin-top: 25px;
       text-align: right;
+      line-height: 2;
       font-size: 16px;
-      margin-top: 20px;
-      line-height: 1.8;
-      padding-right: 12px;
     }
 
-    .highlight {
-      background: #f8e7f6;
-      padding: 12px;
+    .highlight-box {
+      background: #f8e6f5;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    button {
+      background: #b722a6;
+      color: white;
+      border: none;
+      padding: 12px 20px;
       border-radius: 6px;
-      margin-top: 10px;
+      cursor: pointer;
+      font-size: 15px;
+      margin-top: 15px;
     }
 
-    .footer {
-      text-align: center;
-      font-size: 15px;
-      margin-top: 60px;
-      color: #444;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      box-sizing: border-box;
-      font-size: 15px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      font-family: 'Helvetica', Arial, sans-serif;
+    button:hover {
+      background: #8b1a82;
     }
 
     .download-options {
       display: flex;
       justify-content: center;
-      gap: 15px;
-      margin-top: 15px;
+      gap: 10px;
+      margin-top: 20px;
     }
 
-    button {
-      padding: 12px 24px;
-      background: #b722a6;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-      margin-top: 10px;
-      transition: background-color 0.3s ease;
-      font-family: 'Helvetica', Arial, sans-serif;
+    .footer {
+      margin-top: 50px;
+      text-align: center;
+      font-size: 14px;
     }
 
-    button:hover {
-      background-color: #850c3a;
-    }
-
-    .cost-breakdown {
-      margin-top: 30px;
-    }
-
-    .cost-breakdown h3 {
-      background: #b722a6;
-      color: white;
-      padding: 10px;
-      border-radius: 5px;
-    }
   </style>
 </head>
 
@@ -175,129 +135,85 @@
 
 <div class="container">
 
-  <div class="form-section" id="form-section">
+  <!-- FORM -->
+  <div id="form-section">
 
-    <h2>Enter Customer Details</h2>
+    <h2>Customer Details</h2>
 
-    <input type="text" id="customerName" placeholder="Customer Name" />
+    <input type="text" id="customerName" placeholder="Customer Name">
 
-    <input type="text" id="transactionDate" placeholder="Transaction Date (e.g. July 30, 2025)" />
+    <input type="text" id="transactionDate" placeholder="Transaction Date">
 
-    <input type="text" id="teamName" placeholder="Team Name" />
+    <input type="text" id="teamName" placeholder="Team Name">
 
-    <select id="description">
-      <option value="">Select Item</option>
-      <option value="V-Neck / Round Neck T-Shirt">V-Neck / Round Neck T-Shirt</option>
-      <option value="Golf T-Shirt">Golf T-Shirt</option>
-      <option value="Bucket Hat">Bucket Hat</option>
-      <option value="Tracksuit 2 Piece">Tracksuit 2 Piece</option>
-      <option value="Track Top">Track Top</option>
-      <option value="Track Pants">Track Pants</option>
-      <option value="Windbreaker">Windbreaker</option>
-      <option value="Vest">Vest</option>
-      <option value="Telescopic">Telescopic</option>
-      <option value="Gazebo">Gazebo</option>
-      <option value="Stretch Tent">Stretch Tent</option>
-    </select>
+    <h3>Select Items</h3>
 
-    <input type="number" id="quantity" placeholder="Quantity" min="1" />
+    <div id="items-container"></div>
 
-    <input type="number" id="cost" placeholder="Cost per Item (Pula)" />
-
-    <button onclick="generateReceipt()">Get Receipt</button>
+    <button onclick="generateReceipt()">Generate Receipt</button>
 
   </div>
 
-  <div id="receipt" style="display: none">
+  <!-- RECEIPT -->
+  <div id="receipt" style="display:none;">
 
     <div class="header">
-      <div class="company-info">
-        <h2>PLAY SPORTS (Abskd Co.)</h2>
 
-        <p>
-          Mogoditshane Nkoyaphiri, Gaborone South-East BW<br />
-          (267) 75573283 / 72692829<br />
-          playsports@gmail.com<br />
+      <h2>PLAY SPORTS (Abskd Co.)</h2>
 
-          <a href="https://www.abskdsports.com" target="_blank">
-            www.playsports.com
-          </a>
-        </p>
-      </div>
+      <p>
+        Mogoditshane Nkoyaphiri, Gaborone South-East BW<br>
+        (267) 75573283 / 72692829<br>
+        playsports@gmail.com<br>
+        www.playsports.com
+      </p>
+
     </div>
 
     <div class="receipt-title">Receipt / Quote</div>
 
-    <div class="details">
-      <strong>Date:</strong> <span id="r-date"></span><br />
-      <strong>Name:</strong> <span id="r-name"></span><br />
-      <strong>Team:</strong> <span id="r-team"></span>
-    </div>
+    <p><strong>Date:</strong> <span id="r-date"></span></p>
+    <p><strong>Name:</strong> <span id="r-name"></span></p>
+    <p><strong>Team:</strong> <span id="r-team"></span></p>
 
     <table>
+
       <thead>
         <tr>
-          <th>Description</th>
+          <th>Item</th>
           <th>Qty</th>
-          <th>Cost (P)</th>
-          <th>Total (P)</th>
+          <th>Cost</th>
+          <th>Total</th>
         </tr>
       </thead>
 
-      <tbody>
-        <tr>
-          <td id="r-description"></td>
-          <td id="r-qty"></td>
-          <td id="r-cost"></td>
-          <td id="r-total"></td>
-        </tr>
-      </tbody>
+      <tbody id="receipt-items"></tbody>
+
     </table>
 
-    <!-- COST BREAKDOWN -->
-    <div class="cost-breakdown">
-
-      <h3>Cost Breakdown</h3>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Calculation</th>
-            <th>Total Cost</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td id="b-item"></td>
-            <td id="b-calc"></td>
-            <td id="b-total"></td>
-          </tr>
-        </tbody>
-      </table>
-
-    </div>
-
-    <!-- TOTAL SECTION -->
-    <div class="total">
+    <div class="totals">
 
       <p><strong>Subtotal:</strong> <span id="r-subtotal"></span></p>
 
-      <p><strong>Fleet Fee(express) (0%):</strong> <span id="r-tax"></span></p>
+      <p><strong>Total Amount Paid (100%):</strong> <span id="r-grand"></span></p>
 
-      <h3><strong>Total Amount (100%):</strong> <span id="r-grand"></span></h3>
+      <div class="highlight-box">
 
-      <div class="highlight">
         <p>
-          <strong>Deposit Required (70%):</strong>
+          <strong>70% Deposit Amount:</strong>
           <span id="r-deposit"></span>
         </p>
 
         <p>
-          <strong>Remaining Balance (30%):</strong>
+          <strong>30% Remaining Balance:</strong>
           <span id="r-balance"></span>
         </p>
+
+        <p>
+          <strong>Delivery Time:</strong>
+          4 Weeks - 5 Weeks Maximum
+        </p>
+
       </div>
 
     </div>
@@ -309,8 +225,15 @@
       <p><strong>POWERED BY SECURE SOFT LABS (BW)</strong></p>
 
       <div class="download-options">
-        <button onclick="downloadImage()">Download as Image</button>
-        <button onclick="downloadPDF()">Download as PDF</button>
+
+        <button onclick="downloadImage()">
+          Download Image
+        </button>
+
+        <button onclick="downloadPDF()">
+          Download PDF
+        </button>
+
       </div>
 
     </div>
@@ -323,160 +246,215 @@
 
   const { jsPDF } = window.jspdf;
 
+  const items = [
+    "V-Neck / Round Neck T-Shirt",
+    "Golf T-Shirt",
+    "Bucket Hat",
+    "Tracksuit 2 Piece",
+    "Track Top",
+    "Track Pants",
+    "Windbreaker",
+    "Vest",
+    "Telescopic",
+    "Gazebo",
+    "Stretch Tent"
+  ];
+
+  const container = document.getElementById("items-container");
+
+  // CREATE ITEM INPUTS
+  items.forEach((item, index) => {
+
+    container.innerHTML += `
+
+      <div class="item-row">
+
+        <div class="item-name">${item}</div>
+
+        <input 
+          type="number" 
+          min="0"
+          placeholder="Qty"
+          id="qty-${index}"
+        >
+
+        <input 
+          type="number" 
+          min="0"
+          placeholder="Cost"
+          id="cost-${index}"
+        >
+
+      </div>
+
+    `;
+
+  });
+
   function generateReceipt() {
 
-    const name = document.getElementById('customerName').value;
-    const date = document.getElementById('transactionDate').value;
-    const team = document.getElementById('teamName').value;
-    const qty = parseInt(document.getElementById('quantity').value);
-    const desc = document.getElementById('description').value;
-    const cost = parseFloat(document.getElementById('cost').value);
+    const name = document.getElementById("customerName").value;
 
-    if (!name || !date || !team || !qty || !desc || !cost) {
-      alert('Please fill in all fields.');
+    const date = document.getElementById("transactionDate").value;
+
+    const team = document.getElementById("teamName").value;
+
+    if (!name || !date || !team) {
+      alert("Please fill customer details.");
       return;
     }
 
-    const total = qty * cost;
+    let subtotal = 0;
 
-    const tax = total * 0.00;
+    let receiptHTML = "";
 
-    const grand = total + tax;
+    items.forEach((item, index) => {
 
-    // 70% Deposit
-    const deposit = grand * 0.70;
+      const qty =
+        parseFloat(document.getElementById(`qty-${index}`).value) || 0;
 
-    // 30% Remaining
-    const balance = grand - deposit;
+      const cost =
+        parseFloat(document.getElementById(`cost-${index}`).value) || 0;
 
-    // RECEIPT DETAILS
-    document.getElementById('r-name').textContent = name;
+      // ONLY INCLUDE FILLED ITEMS
+      if (qty > 0 && cost > 0) {
 
-    document.getElementById('r-date').textContent = date;
+        const total = qty * cost;
 
-    document.getElementById('r-team').textContent = team;
+        subtotal += total;
 
-    document.getElementById('r-description').textContent = desc;
+        receiptHTML += `
 
-    document.getElementById('r-qty').textContent = qty;
+          <tr>
 
-    document.getElementById('r-cost').textContent = `P${cost.toFixed(2)}`;
+            <td>${item}</td>
 
-    document.getElementById('r-total').textContent = `P${total.toFixed(2)}`;
+            <td>${qty}</td>
 
-    document.getElementById('r-subtotal').textContent = `P${total.toFixed(2)}`;
+            <td>P${cost.toFixed(2)}</td>
 
-    document.getElementById('r-tax').textContent = `P${tax.toFixed(2)}`;
+            <td>P${total.toFixed(2)}</td>
 
-    document.getElementById('r-grand').textContent = `P${grand.toFixed(2)}`;
+          </tr>
 
-    document.getElementById('r-deposit').textContent =
+        `;
+      }
+
+    });
+
+    if (subtotal <= 0) {
+      alert("Please add at least one item.");
+      return;
+    }
+
+    // CALCULATIONS
+    const deposit = subtotal * 0.70;
+
+    const balance = subtotal * 0.30;
+
+    // SET RECEIPT
+    document.getElementById("r-name").textContent = name;
+
+    document.getElementById("r-date").textContent = date;
+
+    document.getElementById("r-team").textContent = team;
+
+    document.getElementById("receipt-items").innerHTML = receiptHTML;
+
+    document.getElementById("r-subtotal").textContent =
+      `P${subtotal.toFixed(2)}`;
+
+    document.getElementById("r-grand").textContent =
+      `P${subtotal.toFixed(2)}`;
+
+    document.getElementById("r-deposit").textContent =
       `P${deposit.toFixed(2)}`;
 
-    document.getElementById('r-balance').textContent =
+    document.getElementById("r-balance").textContent =
       `P${balance.toFixed(2)}`;
 
-    // COST BREAKDOWN
-    document.getElementById('b-item').textContent = desc;
+    document.getElementById("form-section").style.display = "none";
 
-    document.getElementById('b-calc').textContent =
-      `${qty} × P${cost.toFixed(2)}`;
+    document.getElementById("receipt").style.display = "block";
 
-    document.getElementById('b-total').textContent =
-      `P${total.toFixed(2)}`;
-
-    document.getElementById('receipt').style.display = 'block';
-
-    document.getElementById('form-section').style.display = 'none';
   }
 
   function toggleDownloadButtons(show) {
 
-    const buttonsContainer = document.querySelector('.download-options');
+    const buttons =
+      document.querySelector(".download-options");
 
-    if (buttonsContainer) {
-      buttonsContainer.style.display = show ? 'flex' : 'none';
-    }
+    buttons.style.display = show ? "flex" : "none";
+
   }
 
   function generateFileName() {
 
-    let customerName =
-      document.getElementById('r-name').textContent.trim();
+    let customer =
+      document.getElementById("r-name").textContent;
 
-    if (!customerName) customerName = "Customer";
+    return `PLAYSPORTS_${customer.replace(/[^a-z0-9]/gi, "_")}`;
 
-    return `Abskd_Sports_${customerName.replace(/[^a-z0-9]/gi, "_")}`;
   }
 
   function downloadImage() {
 
-    const receipt = document.getElementById('receipt');
+    const receipt = document.getElementById("receipt");
 
     toggleDownloadButtons(false);
 
     html2canvas(receipt, {
       scale: 2,
-      useCORS: true,
-      backgroundColor: "#fff",
+      backgroundColor: "#ffffff"
     }).then(canvas => {
 
-      const link = document.createElement('a');
+      const link = document.createElement("a");
 
       link.download = `${generateFileName()}.jpg`;
 
-      link.href = canvas.toDataURL('image/jpeg', 0.9);
+      link.href = canvas.toDataURL("image/jpeg", 1);
 
       link.click();
 
       toggleDownloadButtons(true);
+
     });
+
   }
 
   async function downloadPDF() {
 
-    const receipt = document.getElementById('receipt');
+    const receipt = document.getElementById("receipt");
 
     toggleDownloadButtons(false);
 
     const canvas = await html2canvas(receipt, {
       scale: 2,
-      useCORS: true,
-      backgroundColor: "#fff",
+      backgroundColor: "#ffffff"
     });
 
-    const imgData = canvas.toDataURL('image/jpeg', 1.0);
+    const imgData = canvas.toDataURL("image/jpeg", 1);
+
+    const pdf = new jsPDF("p", "mm", "a4");
 
     const imgWidth = 210;
 
-    const pageHeight = 297;
+    const imgHeight =
+      canvas.height * imgWidth / canvas.width;
 
-    const imgHeight = canvas.height * imgWidth / canvas.width;
+    pdf.addImage(
+      imgData,
+      "JPEG",
+      0,
+      0,
+      imgWidth,
+      imgHeight
+    );
 
-    let heightLeft = imgHeight;
-
-    const doc = new jsPDF('p', 'mm', 'a4');
-
-    let position = 0;
-
-    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-
-    heightLeft -= pageHeight;
-
-    while (heightLeft >= 0) {
-
-      position = heightLeft - imgHeight;
-
-      doc.addPage();
-
-      doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-
-      heightLeft -= pageHeight;
-    }
-
-    doc.save(`${generateFileName()}.pdf`);
+    pdf.save(`${generateFileName()}.pdf`);
 
     toggleDownloadButtons(true);
+
   }
 
 </script>
