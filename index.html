@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <title>PLAY SPORTS 1.0</title>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <style>
-    /* 🎨 Font and Layout Fixes */
     body {
       font-family: 'Helvetica', Arial, sans-serif;
       background: #f2f2f2;
@@ -33,7 +34,6 @@
       margin-bottom: 10px;
     }
 
-    /* Centered Header Section */
     .header {
       border-bottom: 3px solid #b722a6;
       padding-bottom: 15px;
@@ -92,6 +92,7 @@
       border: 1px solid #ccc;
       padding: 12px;
       font-size: 15px;
+      text-align: center;
     }
 
     th {
@@ -107,6 +108,13 @@
       padding-right: 12px;
     }
 
+    .highlight {
+      background: #f8e7f6;
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
     .footer {
       text-align: center;
       font-size: 15px;
@@ -114,7 +122,7 @@
       color: #444;
     }
 
-    input {
+    input, select {
       width: 100%;
       padding: 10px;
       margin: 8px 0;
@@ -149,175 +157,329 @@
     button:hover {
       background-color: #850c3a;
     }
+
+    .cost-breakdown {
+      margin-top: 30px;
+    }
+
+    .cost-breakdown h3 {
+      background: #b722a6;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+    }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <div class="form-section" id="form-section">
-      <h2>Enter Customer Details</h2>
-      <input type="text" id="customerName" placeholder="Customer Name" />
-      <input type="text" id="transactionDate" placeholder="Transaction Date (e.g. July 30, 2025)" />
-      <input type="text" id="teamName" placeholder="Team Name" />
-      <input type="number" id="quantity" placeholder="Quantity" min="1" />
-      <input type="text" id="description" placeholder="Description" />
-      <input type="number" id="cost" placeholder="Cost per Item (Pula)" />
-      <button onclick="generateReceipt()">Get Receipt</button>
+
+<div class="container">
+
+  <div class="form-section" id="form-section">
+
+    <h2>Enter Customer Details</h2>
+
+    <input type="text" id="customerName" placeholder="Customer Name" />
+
+    <input type="text" id="transactionDate" placeholder="Transaction Date (e.g. July 30, 2025)" />
+
+    <input type="text" id="teamName" placeholder="Team Name" />
+
+    <select id="description">
+      <option value="">Select Item</option>
+      <option value="V-Neck / Round Neck T-Shirt">V-Neck / Round Neck T-Shirt</option>
+      <option value="Golf T-Shirt">Golf T-Shirt</option>
+      <option value="Bucket Hat">Bucket Hat</option>
+      <option value="Tracksuit 2 Piece">Tracksuit 2 Piece</option>
+      <option value="Track Top">Track Top</option>
+      <option value="Track Pants">Track Pants</option>
+      <option value="Windbreaker">Windbreaker</option>
+      <option value="Vest">Vest</option>
+      <option value="Telescopic">Telescopic</option>
+      <option value="Gazebo">Gazebo</option>
+      <option value="Stretch Tent">Stretch Tent</option>
+    </select>
+
+    <input type="number" id="quantity" placeholder="Quantity" min="1" />
+
+    <input type="number" id="cost" placeholder="Cost per Item (Pula)" />
+
+    <button onclick="generateReceipt()">Get Receipt</button>
+
+  </div>
+
+  <div id="receipt" style="display: none">
+
+    <div class="header">
+      <div class="company-info">
+        <h2>PLAY SPORTS (Abskd Co.)</h2>
+
+        <p>
+          Mogoditshane Nkoyaphiri, Gaborone South-East BW<br />
+          (267) 75573283 / 72692829<br />
+          playsports@gmail.com<br />
+
+          <a href="https://www.abskdsports.com" target="_blank">
+            www.playsports.com
+          </a>
+        </p>
+      </div>
     </div>
 
-    <div id="receipt" style="display: none">
-      <div class="header">
-        <div class="company-info">
-          <h2>PLAY SPORTS (Abskd Co.)</h2>
-          <p>
-          Mogoditshane Nkoyaphiri, Gaborone South-East BW<br />
-            (267) 75573283/ 72692829<br />
-            playsports@gmail.com<br />
-            <a href="https://www.abskdsports.com" target="_blank">www.playsports.com</a>
-          </p>
-        </div>
-      </div>
+    <div class="receipt-title">Receipt / Quote</div>
 
-      <div class="receipt-title">Receipt / Quote</div>
+    <div class="details">
+      <strong>Date:</strong> <span id="r-date"></span><br />
+      <strong>Name:</strong> <span id="r-name"></span><br />
+      <strong>Team:</strong> <span id="r-team"></span>
+    </div>
 
-      <div class="details">
-        <strong>Date:</strong> <span id="r-date"></span><br />
-        <strong>Name:</strong> <span id="r-name"></span><br />
-        <strong>Team:</strong> <span id="r-team"></span>
-      </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Qty</th>
+          <th>Cost (P)</th>
+          <th>Total (P)</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td id="r-description"></td>
+          <td id="r-qty"></td>
+          <td id="r-cost"></td>
+          <td id="r-total"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- COST BREAKDOWN -->
+    <div class="cost-breakdown">
+
+      <h3>Cost Breakdown</h3>
 
       <table>
         <thead>
           <tr>
-            <th>Description</th>
-            <th>Qty</th>
-            <th>Cost (P)</th>
-            <th>Total (P)</th>
+            <th>Item</th>
+            <th>Calculation</th>
+            <th>Total Cost</th>
           </tr>
         </thead>
+
         <tbody>
           <tr>
-            <td id="r-description"></td>
-            <td id="r-qty"></td>
-            <td id="r-cost"></td>
-            <td id="r-total"></td>
+            <td id="b-item"></td>
+            <td id="b-calc"></td>
+            <td id="b-total"></td>
           </tr>
         </tbody>
       </table>
 
-      <div class="total">
-        <p><strong>Subtotal:</strong> <span id="r-subtotal"></span></p>
-        <p><strong>Fleet Fee(express) (0%):</strong> <span id="r-tax"></span></p>
-        <h3><strong>Total:</strong> <span id="r-grand"></span></h3>
+    </div>
+
+    <!-- TOTAL SECTION -->
+    <div class="total">
+
+      <p><strong>Subtotal:</strong> <span id="r-subtotal"></span></p>
+
+      <p><strong>Fleet Fee(express) (0%):</strong> <span id="r-tax"></span></p>
+
+      <h3><strong>Total Amount (100%):</strong> <span id="r-grand"></span></h3>
+
+      <div class="highlight">
+        <p>
+          <strong>Deposit Required (70%):</strong>
+          <span id="r-deposit"></span>
+        </p>
+
+        <p>
+          <strong>Remaining Balance (30%):</strong>
+          <span id="r-balance"></span>
+        </p>
       </div>
 
-      <div class="footer">
-        <p>Thanks for your business!</p>
-        <p><strong>POWERED BY SECURE SOFT LABS (BW)</strong></p>
-        <div class="download-options">
-          <button onclick="downloadImage()">Download as Image</button>
-          <button onclick="downloadPDF()">Download as PDF</button>
-        </div>
-      </div>
     </div>
+
+    <div class="footer">
+
+      <p>Thanks for your business!</p>
+
+      <p><strong>POWERED BY SECURE SOFT LABS (BW)</strong></p>
+
+      <div class="download-options">
+        <button onclick="downloadImage()">Download as Image</button>
+        <button onclick="downloadPDF()">Download as PDF</button>
+      </div>
+
+    </div>
+
   </div>
 
-  <script>
-    const { jsPDF } = window.jspdf;
+</div>
 
-    function generateReceipt() {
-      const name = document.getElementById('customerName').value;
-      const date = document.getElementById('transactionDate').value;
-      const team = document.getElementById('teamName').value;
-      const qty = parseInt(document.getElementById('quantity').value);
-      const desc = document.getElementById('description').value;
-      const cost = parseFloat(document.getElementById('cost').value);
+<script>
 
-      if (!name || !date || !team || !qty || !desc || !cost) {
-        alert('Please fill in all fields.');
-        return;
-      }
+  const { jsPDF } = window.jspdf;
 
-      const total = qty * cost;
-      const tax = total * 0.00;
-      const grand = total + tax;
+  function generateReceipt() {
 
-      document.getElementById('r-name').textContent = name;
-      document.getElementById('r-date').textContent = date;
-      document.getElementById('r-team').textContent = team;
-      document.getElementById('r-description').textContent = desc;
-      document.getElementById('r-qty').textContent = qty;
-      document.getElementById('r-cost').textContent = `P${cost.toFixed(2)}`;
-      document.getElementById('r-total').textContent = `P${total.toFixed(2)}`;
-      document.getElementById('r-subtotal').textContent = `P${total.toFixed(2)}`;
-      document.getElementById('r-tax').textContent = `P${tax.toFixed(2)}`;
-      document.getElementById('r-grand').textContent = `P${grand.toFixed(2)}`;
+    const name = document.getElementById('customerName').value;
+    const date = document.getElementById('transactionDate').value;
+    const team = document.getElementById('teamName').value;
+    const qty = parseInt(document.getElementById('quantity').value);
+    const desc = document.getElementById('description').value;
+    const cost = parseFloat(document.getElementById('cost').value);
 
-      document.getElementById('receipt').style.display = 'block';
-      document.getElementById('form-section').style.display = 'none';
+    if (!name || !date || !team || !qty || !desc || !cost) {
+      alert('Please fill in all fields.');
+      return;
     }
 
-    function toggleDownloadButtons(show) {
-      const buttonsContainer = document.querySelector('.download-options');
-      if (buttonsContainer) {
-        buttonsContainer.style.display = show ? 'flex' : 'none';
-      }
+    const total = qty * cost;
+
+    const tax = total * 0.00;
+
+    const grand = total + tax;
+
+    // 70% Deposit
+    const deposit = grand * 0.70;
+
+    // 30% Remaining
+    const balance = grand - deposit;
+
+    // RECEIPT DETAILS
+    document.getElementById('r-name').textContent = name;
+
+    document.getElementById('r-date').textContent = date;
+
+    document.getElementById('r-team').textContent = team;
+
+    document.getElementById('r-description').textContent = desc;
+
+    document.getElementById('r-qty').textContent = qty;
+
+    document.getElementById('r-cost').textContent = `P${cost.toFixed(2)}`;
+
+    document.getElementById('r-total').textContent = `P${total.toFixed(2)}`;
+
+    document.getElementById('r-subtotal').textContent = `P${total.toFixed(2)}`;
+
+    document.getElementById('r-tax').textContent = `P${tax.toFixed(2)}`;
+
+    document.getElementById('r-grand').textContent = `P${grand.toFixed(2)}`;
+
+    document.getElementById('r-deposit').textContent =
+      `P${deposit.toFixed(2)}`;
+
+    document.getElementById('r-balance').textContent =
+      `P${balance.toFixed(2)}`;
+
+    // COST BREAKDOWN
+    document.getElementById('b-item').textContent = desc;
+
+    document.getElementById('b-calc').textContent =
+      `${qty} × P${cost.toFixed(2)}`;
+
+    document.getElementById('b-total').textContent =
+      `P${total.toFixed(2)}`;
+
+    document.getElementById('receipt').style.display = 'block';
+
+    document.getElementById('form-section').style.display = 'none';
+  }
+
+  function toggleDownloadButtons(show) {
+
+    const buttonsContainer = document.querySelector('.download-options');
+
+    if (buttonsContainer) {
+      buttonsContainer.style.display = show ? 'flex' : 'none';
     }
+  }
 
-    function generateFileName() {
-      let customerName = document.getElementById('r-name').textContent.trim();
-      if (!customerName) customerName = "Customer";
-      return `Abskd_Sports_${customerName.replace(/[^a-z0-9]/gi, "_")}`;
-    }
+  function generateFileName() {
 
-    function downloadImage() {
-      const receipt = document.getElementById('receipt');
-      toggleDownloadButtons(false);
+    let customerName =
+      document.getElementById('r-name').textContent.trim();
 
-      html2canvas(receipt, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#fff",
-      }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = `${generateFileName()}.jpg`;
-        link.href = canvas.toDataURL('image/jpeg', 0.9);
-        link.click();
-        toggleDownloadButtons(true);
-      });
-    }
+    if (!customerName) customerName = "Customer";
 
-    async function downloadPDF() {
-      const receipt = document.getElementById('receipt');
-      toggleDownloadButtons(false);
+    return `Abskd_Sports_${customerName.replace(/[^a-z0-9]/gi, "_")}`;
+  }
 
-      const canvas = await html2canvas(receipt, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#fff",
-      });
+  function downloadImage() {
 
-      const imgData = canvas.toDataURL('image/jpeg', 1.0);
-      const imgWidth = 210;
-      const pageHeight = 297;
-      const imgHeight = canvas.height * imgWidth / canvas.width;
-      let heightLeft = imgHeight;
+    const receipt = document.getElementById('receipt');
 
-      const doc = new jsPDF('p', 'mm', 'a4');
-      let position = 0;
+    toggleDownloadButtons(false);
+
+    html2canvas(receipt, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#fff",
+    }).then(canvas => {
+
+      const link = document.createElement('a');
+
+      link.download = `${generateFileName()}.jpg`;
+
+      link.href = canvas.toDataURL('image/jpeg', 0.9);
+
+      link.click();
+
+      toggleDownloadButtons(true);
+    });
+  }
+
+  async function downloadPDF() {
+
+    const receipt = document.getElementById('receipt');
+
+    toggleDownloadButtons(false);
+
+    const canvas = await html2canvas(receipt, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#fff",
+    });
+
+    const imgData = canvas.toDataURL('image/jpeg', 1.0);
+
+    const imgWidth = 210;
+
+    const pageHeight = 297;
+
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+
+    let heightLeft = imgHeight;
+
+    const doc = new jsPDF('p', 'mm', 'a4');
+
+    let position = 0;
+
+    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+
+    heightLeft -= pageHeight;
+
+    while (heightLeft >= 0) {
+
+      position = heightLeft - imgHeight;
+
+      doc.addPage();
 
       doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+
       heightLeft -= pageHeight;
-
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        doc.addPage();
-        doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
-
-      doc.save(`${generateFileName()}.pdf`);
-      toggleDownloadButtons(true);
     }
-  </script>
+
+    doc.save(`${generateFileName()}.pdf`);
+
+    toggleDownloadButtons(true);
+  }
+
+</script>
+
 </body>
 </html>
