@@ -4,10 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <title>PLAY SPORTS 4.0</title>
+  <title>PLAY SPORTS 3.0</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
@@ -20,7 +19,7 @@
     }
 
     .container {
-      width: 950px;
+      width: 850px;
       background: #fff;
       margin: auto;
       padding: 40px;
@@ -50,11 +49,11 @@
       margin-bottom: 25px;
     }
 
-    input {
+    input, select {
 
       width: 100%;
       padding: 10px;
-      margin: 5px 0;
+      margin: 6px 0;
       border-radius: 5px;
       border: 1px solid #ccc;
       box-sizing: border-box;
@@ -65,7 +64,7 @@
     .item-row {
 
       display: grid;
-      grid-template-columns: 1.5fr 120px 120px 120px 120px;
+      grid-template-columns: 1.4fr 1fr 100px 120px;
       gap: 10px;
       margin-bottom: 10px;
       align-items: center;
@@ -160,16 +159,6 @@
 
     }
 
-    .labels {
-
-      display: grid;
-      grid-template-columns: 1.5fr 120px 120px 120px 120px;
-      gap: 10px;
-      margin-bottom: 10px;
-      font-weight: bold;
-
-    }
-
   </style>
 
 </head>
@@ -189,21 +178,7 @@
 
     <input type="text" id="teamName" placeholder="Team Name">
 
-    <h3>Items Sold</h3>
-
-    <div class="labels">
-
-      <div>Item</div>
-
-      <div>Adult Qty</div>
-
-      <div>Adult Cost</div>
-
-      <div>Kids Qty</div>
-
-      <div>Kids Cost</div>
-
-    </div>
+    <h3>Select Items</h3>
 
     <div id="items-container"></div>
 
@@ -239,25 +214,17 @@
 
     <p><strong>Team:</strong> <span id="r-team"></span></p>
 
-    <!-- TABLE -->
+    <!-- ITEMS TABLE -->
     <table>
 
       <thead>
-
         <tr>
-
           <th>Item</th>
-
           <th>Category</th>
-
           <th>Qty</th>
-
           <th>Cost</th>
-
           <th>Total</th>
-
         </tr>
-
       </thead>
 
       <tbody id="receipt-items"></tbody>
@@ -331,129 +298,63 @@
 
   const { jsPDF } = window.jspdf;
 
-  // ALL ITEMS
   const items = [
 
-    {
-      name: "V-Neck / Round Neck T-Shirt",
-      kids: true
-    },
+    "V-Neck / Round Neck T-Shirt",
+    "Golf T-Shirt",
+    "Bucket Hat",
+    "Tracksuit 2 Piece",
+    "Track Top",
+    "Track Pants",
+    "Windbreaker",
+    "Vest",
+    "Telescopic",
+    "Gazebo",
+    "Stretch Tent"
 
-    {
-      name: "Golf T-Shirt",
-      kids: true
-    },
+  ];
 
-    {
-      name: "Bucket Hat",
-      kids: false
-    },
+  // ITEMS THAT SUPPORT KIDS/ADULTS
+  const variantItems = [
 
-    {
-      name: "Tracksuit 2 Piece",
-      kids: true
-    },
-
-    {
-      name: "Track Top",
-      kids: false
-    },
-
-    {
-      name: "Track Pants",
-      kids: false
-    },
-
-    {
-      name: "Windbreaker",
-      kids: true
-    },
-
-    {
-      name: "Vest",
-      kids: false
-    },
-
-    {
-      name: "Telescopic",
-      kids: false
-    },
-
-    {
-      name: "Gazebo",
-      kids: false
-    },
-
-    {
-      name: "Stretch Tent",
-      kids: false
-    }
+    "V-Neck / Round Neck T-Shirt",
+    "Golf T-Shirt",
+    "Tracksuit 2 Piece",
+    "Track Top",
+    "Track Pants",
+    "Windbreaker"
 
   ];
 
   const container =
     document.getElementById("items-container");
 
-  // CREATE FORM ROWS
+  // BUILD FORM
   items.forEach((item, index) => {
+
+    const hasVariant =
+      variantItems.includes(item);
 
     container.innerHTML += `
 
       <div class="item-row">
 
-        <div class="item-title">
-          ${item.name}
-        </div>
+        <div class="item-title">${item}</div>
 
-        <!-- ADULT -->
-        <input
-          type="number"
-          min="0"
-          placeholder="Adult Qty"
-          id="adultQty-${index}"
-        >
-
-        <input
-          type="number"
-          min="0"
-          placeholder="Adult Cost"
-          id="adultCost-${index}"
-        >
-
-        <!-- KIDS -->
         ${
-          item.kids
+          hasVariant
           ?
-          `
-          <input
-            type="number"
-            min="0"
-            placeholder="Kids Qty"
-            id="kidsQty-${index}"
-          >
-
-          <input
-            type="number"
-            min="0"
-            placeholder="Kids Cost"
-            id="kidsCost-${index}"
-          >
-          `
+          `<select id="type-${index}">
+              <option value="Adult">Adult</option>
+              <option value="Kids">Kids</option>
+           </select>`
           :
-          `
-          <input
-            type="text"
-            value="N/A"
-            disabled
-          >
-
-          <input
-            type="text"
-            value="N/A"
-            disabled
-          >
-          `
+          `<input value="Standard" disabled>`
         }
+
+        <input type="number" min="0" placeholder="Qty" id="qty-${index}">
+
+        <input type="number" min="0" placeholder="Cost" id="cost-${index}">
 
       </div>
 
@@ -461,7 +362,6 @@
 
   });
 
-  // GENERATE RECEIPT
   function generateReceipt() {
 
     const name =
@@ -474,247 +374,124 @@
       document.getElementById("teamName").value;
 
     if (!name || !date || !team) {
-
-      alert("Please fill customer details.");
-
+      alert("Fill all details");
       return;
-
     }
 
     let subtotal = 0;
 
-    let receiptHTML = "";
+    let html = "";
 
-    items.forEach((item, index) => {
+    items.forEach((item, i) => {
 
-      // ADULT
-      const adultQty =
-        parseFloat(
-          document.getElementById(`adultQty-${index}`).value
-        ) || 0;
+      const hasVariant =
+        variantItems.includes(item);
 
-      const adultCost =
-        parseFloat(
-          document.getElementById(`adultCost-${index}`).value
-        ) || 0;
+      const type = hasVariant
+        ? document.getElementById(`type-${i}`).value
+        : "Standard";
 
-      // KIDS
-      let kidsQty = 0;
-      let kidsCost = 0;
+      const qty =
+        parseFloat(document.getElementById(`qty-${i}`).value) || 0;
 
-      if (item.kids) {
+      let cost =
+        parseFloat(document.getElementById(`cost-${i}`).value) || 0;
 
-        kidsQty =
-          parseFloat(
-            document.getElementById(`kidsQty-${index}`).value
-          ) || 0;
-
-        kidsCost =
-          parseFloat(
-            document.getElementById(`kidsCost-${index}`).value
-          ) || 0;
-
+      // KIDS DISCOUNT RULE
+      if (type === "Kids") {
+        cost = cost * 0.80;
       }
 
-      // ADULT ROW
-      if (adultQty > 0 && adultCost > 0) {
+      if (qty > 0 && cost > 0) {
 
-        const adultTotal =
-          adultQty * adultCost;
+        const total = qty * cost;
 
-        subtotal += adultTotal;
+        subtotal += total;
 
-        receiptHTML += `
-
+        html += `
           <tr>
-
-            <td>${item.name}</td>
-
-            <td>Adult</td>
-
-            <td>${adultQty}</td>
-
-            <td>P${adultCost.toFixed(2)}</td>
-
-            <td>P${adultTotal.toFixed(2)}</td>
-
+            <td>${item}</td>
+            <td>${type}</td>
+            <td>${qty}</td>
+            <td>P${cost.toFixed(2)}</td>
+            <td>P${total.toFixed(2)}</td>
           </tr>
-
-        `;
-
-      }
-
-      // KIDS ROW
-      if (kidsQty > 0 && kidsCost > 0) {
-
-        const kidsTotal =
-          kidsQty * kidsCost;
-
-        subtotal += kidsTotal;
-
-        receiptHTML += `
-
-          <tr>
-
-            <td>${item.name}</td>
-
-            <td>Kids</td>
-
-            <td>${kidsQty}</td>
-
-            <td>P${kidsCost.toFixed(2)}</td>
-
-            <td>P${kidsTotal.toFixed(2)}</td>
-
-          </tr>
-
         `;
 
       }
 
     });
 
-    if (subtotal <= 0) {
+    const deposit = subtotal * 0.70;
+    const balance = subtotal * 0.30;
 
-      alert("Please add at least one item.");
+    document.getElementById("r-name").textContent = name;
+    document.getElementById("r-date").textContent = date;
+    document.getElementById("r-team").textContent = team;
 
-      return;
+    document.getElementById("receipt-items").innerHTML = html;
 
-    }
+    document.getElementById("r-subtotal").textContent = `P${subtotal.toFixed(2)}`;
+    document.getElementById("r-grand").textContent = `P${subtotal.toFixed(2)}`;
+    document.getElementById("r-deposit").textContent = `P${deposit.toFixed(2)}`;
+    document.getElementById("r-balance").textContent = `P${balance.toFixed(2)}`;
 
-    // CALCULATIONS
-    const deposit =
-      subtotal * 0.70;
-
-    const balance =
-      subtotal * 0.30;
-
-    // SET RECEIPT
-    document.getElementById("r-name").textContent =
-      name;
-
-    document.getElementById("r-date").textContent =
-      date;
-
-    document.getElementById("r-team").textContent =
-      team;
-
-    document.getElementById("receipt-items").innerHTML =
-      receiptHTML;
-
-    document.getElementById("r-subtotal").textContent =
-      `P${subtotal.toFixed(2)}`;
-
-    document.getElementById("r-grand").textContent =
-      `P${subtotal.toFixed(2)}`;
-
-    document.getElementById("r-deposit").textContent =
-      `P${deposit.toFixed(2)}`;
-
-    document.getElementById("r-balance").textContent =
-      `P${balance.toFixed(2)}`;
-
-    // SHOW RECEIPT
-    document.getElementById("form-section").style.display =
-      "none";
-
-    document.getElementById("receipt").style.display =
-      "block";
+    document.getElementById("form-section").style.display = "none";
+    document.getElementById("receipt").style.display = "block";
 
   }
 
-  // TOGGLE BUTTONS
   function toggleDownloadButtons(show) {
-
-    const buttons =
-      document.querySelector(".download-options");
-
-    buttons.style.display =
+    document.querySelector(".download-options").style.display =
       show ? "flex" : "none";
-
   }
 
-  // FILE NAME
   function generateFileName() {
-
-    let customer =
-      document.getElementById("r-name").textContent;
-
-    return `PLAYSPORTS_${customer.replace(/[^a-z0-9]/gi, "_")}`;
-
+    return "PLAYSPORTS_" +
+      document.getElementById("r-name").textContent.replace(/[^a-z0-9]/gi, "_");
   }
 
-  // DOWNLOAD IMAGE
   function downloadImage() {
 
-    const receipt =
-      document.getElementById("receipt");
+    const receipt = document.getElementById("receipt");
 
     toggleDownloadButtons(false);
 
-    html2canvas(receipt, {
+    html2canvas(receipt, { scale: 2, backgroundColor: "#fff" })
+      .then(canvas => {
 
-      scale: 2,
-      backgroundColor: "#ffffff"
+        const a = document.createElement("a");
 
-    }).then(canvas => {
+        a.download = generateFileName() + ".jpg";
 
-      const link =
-        document.createElement("a");
+        a.href = canvas.toDataURL("image/jpeg", 1);
 
-      link.download =
-        `${generateFileName()}.jpg`;
+        a.click();
 
-      link.href =
-        canvas.toDataURL("image/jpeg", 1);
-
-      link.click();
-
-      toggleDownloadButtons(true);
-
-    });
-
-  }
-
-  // DOWNLOAD PDF
-  async function downloadPDF() {
-
-    const receipt =
-      document.getElementById("receipt");
-
-    toggleDownloadButtons(false);
-
-    const canvas =
-      await html2canvas(receipt, {
-
-        scale: 2,
-        backgroundColor: "#ffffff"
+        toggleDownloadButtons(true);
 
       });
 
-    const imgData =
-      canvas.toDataURL("image/jpeg", 1);
+  }
 
-    const pdf =
-      new jsPDF("p", "mm", "a4");
+  async function downloadPDF() {
 
-    const imgWidth = 210;
+    const receipt = document.getElementById("receipt");
 
-    const imgHeight =
-      canvas.height * imgWidth / canvas.width;
+    toggleDownloadButtons(false);
 
-    pdf.addImage(
+    const canvas = await html2canvas(receipt, {
+      scale: 2,
+      backgroundColor: "#fff"
+    });
 
-      imgData,
-      "JPEG",
-      0,
-      0,
-      imgWidth,
-      imgHeight
+    const pdf = new jsPDF("p", "mm", "a4");
 
-    );
+    const img = canvas.toDataURL("image/jpeg", 1);
 
-    pdf.save(`${generateFileName()}.pdf`);
+    pdf.addImage(img, "JPEG", 0, 0, 210, 297);
+
+    pdf.save(generateFileName() + ".pdf");
 
     toggleDownloadButtons(true);
 
