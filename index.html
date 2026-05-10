@@ -10,7 +10,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
-
     body {
       font-family: Arial, sans-serif;
       background: #f2f2f2;
@@ -50,7 +49,6 @@
     }
 
     input, select {
-
       width: 100%;
       padding: 10px;
       margin: 6px 0;
@@ -58,17 +56,14 @@
       border: 1px solid #ccc;
       box-sizing: border-box;
       font-size: 14px;
-
     }
 
     .item-row {
-
       display: grid;
       grid-template-columns: 1.4fr 1fr 100px 120px;
       gap: 10px;
       margin-bottom: 10px;
       align-items: center;
-
     }
 
     .item-title {
@@ -76,47 +71,36 @@
     }
 
     table {
-
       width: 100%;
       border-collapse: collapse;
       margin-top: 25px;
-
     }
 
     th, td {
-
       border: 1px solid #ccc;
       padding: 10px;
       text-align: center;
-
     }
 
     th {
-
       background: #b722a6;
       color: white;
-
     }
 
     .totals {
-
       margin-top: 25px;
       text-align: right;
       line-height: 2;
-
     }
 
     .highlight-box {
-
       background: #f9e6f6;
       padding: 15px;
       border-radius: 8px;
       margin-top: 15px;
-
     }
 
     button {
-
       background: #b722a6;
       color: white;
       border: none;
@@ -125,83 +109,61 @@
       cursor: pointer;
       margin-top: 15px;
       font-size: 15px;
-
     }
 
     button:hover {
-
       background: #8d1681;
-
     }
 
     .download-options {
-
       display: flex;
       justify-content: center;
       gap: 10px;
       margin-top: 20px;
-
     }
 
     .footer {
-
       margin-top: 50px;
       text-align: center;
-
     }
 
     .delivery-box {
-
       margin-top: 20px;
       background: #f2f2f2;
       padding: 12px;
       border-radius: 6px;
-
     }
-
   </style>
-
 </head>
-
 <body>
 
 <div class="container">
 
   <!-- FORM -->
   <div id="form-section">
-
     <h2>Customer Details</h2>
-
     <input type="text" id="customerName" placeholder="Customer Name">
-
     <input type="text" id="transactionDate" placeholder="Transaction Date">
-
     <input type="text" id="teamName" placeholder="Team Name">
 
     <h3>Select Items</h3>
-
     <div id="items-container"></div>
 
     <button onclick="generateReceipt()">
       Generate Receipt
     </button>
-
   </div>
 
   <!-- RECEIPT -->
   <div id="receipt" style="display:none;">
-
     <div class="header">
-
       <h2>PLAY SPORTS (Abskd Co.)</h2>
-
       <p>
         Mogoditshane Nkoyaphiri, Gaborone South-East BW<br>
         (267) 75573283 / 72692829<br>
         playsports@gmail.com<br>
         www.playsports.com
       </p>
-
     </div>
 
     <div class="receipt-title">
@@ -209,14 +171,10 @@
     </div>
 
     <p><strong>Date:</strong> <span id="r-date"></span></p>
-
     <p><strong>Name:</strong> <span id="r-name"></span></p>
-
     <p><strong>Team:</strong> <span id="r-team"></span></p>
 
-    <!-- ITEMS TABLE -->
     <table>
-
       <thead>
         <tr>
           <th>Item</th>
@@ -226,80 +184,57 @@
           <th>Total</th>
         </tr>
       </thead>
-
       <tbody id="receipt-items"></tbody>
-
     </table>
 
-    <!-- TOTALS -->
     <div class="totals">
-
       <p>
         <strong>Subtotal:</strong>
         <span id="r-subtotal"></span>
       </p>
-
       <p>
         <strong>Total Amount Paid (100%):</strong>
         <span id="r-grand"></span>
       </p>
-
       <div class="highlight-box">
-
         <p>
           <strong>70% Deposit Amount:</strong>
           <span id="r-deposit"></span>
         </p>
-
         <p>
           <strong>30% Remaining Balance:</strong>
           <span id="r-balance"></span>
         </p>
-
       </div>
-
       <div class="delivery-box">
-
         <strong>Delivery Time:</strong>
         4 Weeks - 5 Weeks Maximum
-
       </div>
-
     </div>
 
-    <!-- FOOTER -->
     <div class="footer">
-
       <p>Thanks for your business!</p>
-
       <p>
         <strong>POWERED BY SECURE SOFT LABS (BW)</strong>
       </p>
-
       <div class="download-options">
-
         <button onclick="downloadImage()">
           Download Image
         </button>
-
         <button onclick="downloadPDF()">
           Download PDF
         </button>
-
       </div>
-
     </div>
-
   </div>
 
 </div>
 
 <script>
-
   const { jsPDF } = window.jspdf;
 
+  // PRODUCTS
   const items = [
-
     "V-Neck / Round Neck T-Shirt",
     "Golf T-Shirt",
     "Bucket Hat",
@@ -311,104 +246,71 @@
     "Telescopic",
     "Gazebo",
     "Stretch Tent"
-
   ];
 
-  // ITEMS THAT SUPPORT KIDS/ADULTS
-  const variantItems = [
-
+  // List of items that should have Adult/Kids features
+  const itemsWithKidsAdults = [
     "V-Neck / Round Neck T-Shirt",
     "Golf T-Shirt",
     "Tracksuit 2 Piece",
     "Track Top",
     "Track Pants",
     "Windbreaker"
-
   ];
 
-  const container =
-    document.getElementById("items-container");
+  const container = document.getElementById("items-container");
 
-  // BUILD FORM
+  // GENERATE ITEM INPUTS
   items.forEach((item, index) => {
-
-    const hasVariant =
-      variantItems.includes(item);
-
+    const isClothing = itemsWithKidsAdults.includes(item);
+    
     container.innerHTML += `
-
       <div class="item-row">
-
-        <div class="item-title">${item}</div>
-
-        ${
-          hasVariant
-          ?
-          `<select id="type-${index}">
-              <option value="Adult">Adult</option>
-              <option value="Kids">Kids</option>
-           </select>`
-          :
-          `<input value="Standard" disabled>`
-        }
-
+        <div class="item-title">
+          ${item}
+        </div>
+        <select id="type-${index}" ${!isClothing ? 'disabled' : ''}>
+          ${isClothing ? `
+            <option value="Adult">Adult</option>
+            <option value="Kids">Kids</option>
+          ` : `
+            <option value="Standard">Standard</option>
+          `}
+        </select>
         <input type="number" min="0" placeholder="Qty" id="qty-${index}">
-
         <input type="number" min="0" placeholder="Cost" id="cost-${index}">
-
       </div>
-
     `;
-
   });
 
   function generateReceipt() {
-
-    const name =
-      document.getElementById("customerName").value;
-
-    const date =
-      document.getElementById("transactionDate").value;
-
-    const team =
-      document.getElementById("teamName").value;
+    const name = document.getElementById("customerName").value;
+    const date = document.getElementById("transactionDate").value;
+    const team = document.getElementById("teamName").value;
 
     if (!name || !date || !team) {
-      alert("Fill all details");
+      alert("Please fill customer details.");
       return;
     }
 
     let subtotal = 0;
+    let receiptHTML = "";
 
-    let html = "";
+    items.forEach((item, index) => {
+      const type = document.getElementById(`type-${index}`).value;
+      const qty = parseFloat(document.getElementById(`qty-${index}`).value) || 0;
+      let cost = parseFloat(document.getElementById(`cost-${index}`).value) || 0;
 
-    items.forEach((item, i) => {
-
-      const hasVariant =
-        variantItems.includes(item);
-
-      const type = hasVariant
-        ? document.getElementById(`type-${i}`).value
-        : "Standard";
-
-      const qty =
-        parseFloat(document.getElementById(`qty-${i}`).value) || 0;
-
-      let cost =
-        parseFloat(document.getElementById(`cost-${i}`).value) || 0;
-
-      // KIDS DISCOUNT RULE
-      if (type === "Kids") {
+      // Only apply Kids Discount (20% off) for specific items listed
+      if (itemsWithKidsAdults.includes(item) && type === "Kids") {
         cost = cost * 0.80;
       }
 
       if (qty > 0 && cost > 0) {
-
         const total = qty * cost;
-
         subtotal += total;
 
-        html += `
+        receiptHTML += `
           <tr>
             <td>${item}</td>
             <td>${type}</td>
@@ -417,10 +319,13 @@
             <td>P${total.toFixed(2)}</td>
           </tr>
         `;
-
       }
-
     });
+
+    if (subtotal <= 0) {
+      alert("Please add at least one item.");
+      return;
+    }
 
     const deposit = subtotal * 0.70;
     const balance = subtotal * 0.30;
@@ -428,9 +333,7 @@
     document.getElementById("r-name").textContent = name;
     document.getElementById("r-date").textContent = date;
     document.getElementById("r-team").textContent = team;
-
-    document.getElementById("receipt-items").innerHTML = html;
-
+    document.getElementById("receipt-items").innerHTML = receiptHTML;
     document.getElementById("r-subtotal").textContent = `P${subtotal.toFixed(2)}`;
     document.getElementById("r-grand").textContent = `P${subtotal.toFixed(2)}`;
     document.getElementById("r-deposit").textContent = `P${deposit.toFixed(2)}`;
@@ -438,65 +341,48 @@
 
     document.getElementById("form-section").style.display = "none";
     document.getElementById("receipt").style.display = "block";
-
   }
 
   function toggleDownloadButtons(show) {
-    document.querySelector(".download-options").style.display =
-      show ? "flex" : "none";
+    const buttons = document.querySelector(".download-options");
+    buttons.style.display = show ? "flex" : "none";
   }
 
   function generateFileName() {
-    return "PLAYSPORTS_" +
-      document.getElementById("r-name").textContent.replace(/[^a-z0-9]/gi, "_");
+    let customer = document.getElementById("r-name").textContent;
+    return `PLAYSPORTS_${customer.replace(/[^a-z0-9]/gi, "_")}`;
   }
 
   function downloadImage() {
-
     const receipt = document.getElementById("receipt");
-
     toggleDownloadButtons(false);
-
-    html2canvas(receipt, { scale: 2, backgroundColor: "#fff" })
-      .then(canvas => {
-
-        const a = document.createElement("a");
-
-        a.download = generateFileName() + ".jpg";
-
-        a.href = canvas.toDataURL("image/jpeg", 1);
-
-        a.click();
-
-        toggleDownloadButtons(true);
-
-      });
-
+    html2canvas(receipt, {
+      scale: 2,
+      backgroundColor: "#ffffff"
+    }).then(canvas => {
+      const link = document.createElement("a");
+      link.download = `${generateFileName()}.jpg`;
+      link.href = canvas.toDataURL("image/jpeg", 1);
+      link.click();
+      toggleDownloadButtons(true);
+    });
   }
 
   async function downloadPDF() {
-
     const receipt = document.getElementById("receipt");
-
     toggleDownloadButtons(false);
-
     const canvas = await html2canvas(receipt, {
       scale: 2,
-      backgroundColor: "#fff"
+      backgroundColor: "#ffffff"
     });
-
+    const imgData = canvas.toDataURL("image/jpeg", 1);
     const pdf = new jsPDF("p", "mm", "a4");
-
-    const img = canvas.toDataURL("image/jpeg", 1);
-
-    pdf.addImage(img, "JPEG", 0, 0, 210, 297);
-
-    pdf.save(generateFileName() + ".pdf");
-
+    const imgWidth = 210;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+    pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight);
+    pdf.save(`${generateFileName()}.pdf`);
     toggleDownloadButtons(true);
-
   }
-
 </script>
 
 </body>
