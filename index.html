@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-  <title>PLAY SPORTS 4.0</title>
+  <title>PLAY SPORTS INVOICE</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
@@ -20,7 +18,7 @@
     }
 
     .container {
-      width: 950px;
+      width: 850px;
       background: white;
       margin: auto;
       padding: 40px;
@@ -42,9 +40,9 @@
     .receipt-title {
       background: #b722a6;
       color: white;
+      text-align: center;
       padding: 12px;
       border-radius: 6px;
-      text-align: center;
       font-size: 20px;
       font-weight: bold;
       margin-bottom: 25px;
@@ -53,19 +51,18 @@
     input {
       width: 100%;
       padding: 10px;
-      margin: 5px 0;
+      margin: 6px 0;
       border-radius: 5px;
       border: 1px solid #ccc;
       box-sizing: border-box;
-      font-size: 14px;
     }
 
     .item-section {
-      background: #fafafa;
       border: 1px solid #ddd;
       padding: 15px;
-      border-radius: 8px;
       margin-bottom: 20px;
+      border-radius: 8px;
+      background: #fafafa;
     }
 
     .item-section h4 {
@@ -73,16 +70,10 @@
       color: #b722a6;
     }
 
-    .grid-4 {
+    .grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
     }
 
     table {
@@ -110,16 +101,9 @@
     }
 
     .highlight-box {
-      background: #f9e6f6;
+      background: #f8e5f5;
       padding: 15px;
       border-radius: 8px;
-      margin-top: 15px;
-    }
-
-    .delivery-box {
-      background: #f2f2f2;
-      padding: 12px;
-      border-radius: 6px;
       margin-top: 15px;
     }
 
@@ -135,7 +119,7 @@
     }
 
     button:hover {
-      background: #8d1681;
+      background: #8a197f;
     }
 
     .download-options {
@@ -150,7 +134,15 @@
       text-align: center;
     }
 
+    .delivery-box {
+      background: #f2f2f2;
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 15px;
+    }
+
   </style>
+
 </head>
 
 <body>
@@ -168,22 +160,32 @@
 
     <input type="text" id="teamName" placeholder="Team Name">
 
-    <h3>Products</h3>
-
-    <!-- VNECK -->
+    <!-- TSHIRTS -->
     <div class="item-section">
 
-      <h4>V-Neck / Round Neck T-Shirts</h4>
+      <h4>T-Shirts</h4>
 
-      <div class="grid-4">
+      <div class="grid">
 
-        <input type="number" id="vneckAdultQty" placeholder="Adult Qty">
+        <div>
+          <label>Adults Quantity</label>
+          <input type="number" id="adultTshirtQty" min="0">
+        </div>
 
-        <input type="number" id="vneckAdultCost" placeholder="Adult Cost">
+        <div>
+          <label>Adults Cost Per Item</label>
+          <input type="number" id="adultTshirtCost" min="0">
+        </div>
 
-        <input type="number" id="vneckKidsQty" placeholder="Kids Qty">
+        <div>
+          <label>Kids Quantity</label>
+          <input type="number" id="kidsTshirtQty" min="0">
+        </div>
 
-        <input type="number" id="vneckKidsCost" placeholder="Kids Cost">
+        <div>
+          <label>Kids Cost Per Item</label>
+          <input type="number" id="kidsTshirtCost" min="0">
+        </div>
 
       </div>
 
@@ -194,15 +196,27 @@
 
       <h4>Tracksuits</h4>
 
-      <div class="grid-4">
+      <div class="grid">
 
-        <input type="number" id="tracksuitAdultQty" placeholder="Adult Qty">
+        <div>
+          <label>Adults Quantity</label>
+          <input type="number" id="adultTracksuitQty" min="0">
+        </div>
 
-        <input type="number" id="tracksuitAdultCost" placeholder="Adult Cost">
+        <div>
+          <label>Adults Cost Per Item</label>
+          <input type="number" id="adultTracksuitCost" min="0">
+        </div>
 
-        <input type="number" id="tracksuitKidsQty" placeholder="Kids Qty">
+        <div>
+          <label>Kids Quantity</label>
+          <input type="number" id="kidsTracksuitQty" min="0">
+        </div>
 
-        <input type="number" id="tracksuitKidsCost" placeholder="Kids Cost">
+        <div>
+          <label>Kids Cost Per Item</label>
+          <input type="number" id="kidsTracksuitCost" min="0">
+        </div>
 
       </div>
 
@@ -213,57 +227,34 @@
 
       <h4>Windbreakers</h4>
 
-      <div class="grid-4">
+      <div class="grid">
 
-        <input type="number" id="windAdultQty" placeholder="Adult Qty">
+        <div>
+          <label>Adults Quantity</label>
+          <input type="number" id="adultWindQty" min="0">
+        </div>
 
-        <input type="number" id="windAdultCost" placeholder="Adult Cost">
+        <div>
+          <label>Adults Cost Per Item</label>
+          <input type="number" id="adultWindCost" min="0">
+        </div>
 
-        <input type="number" id="windKidsQty" placeholder="Kids Qty">
+        <div>
+          <label>Kids Quantity</label>
+          <input type="number" id="kidsWindQty" min="0">
+        </div>
 
-        <input type="number" id="windKidsCost" placeholder="Kids Cost">
-
-      </div>
-
-    </div>
-
-    <!-- NORMAL ITEMS -->
-    <div class="item-section">
-
-      <h4>Other Products</h4>
-
-      <div class="grid-2">
-
-        <input type="number" id="golfQty" placeholder="Golf T-Shirt Qty">
-        <input type="number" id="golfCost" placeholder="Golf T-Shirt Cost">
-
-        <input type="number" id="bucketQty" placeholder="Bucket Hat Qty">
-        <input type="number" id="bucketCost" placeholder="Bucket Hat Cost">
-
-        <input type="number" id="trackTopQty" placeholder="Track Top Qty">
-        <input type="number" id="trackTopCost" placeholder="Track Top Cost">
-
-        <input type="number" id="trackPantQty" placeholder="Track Pants Qty">
-        <input type="number" id="trackPantCost" placeholder="Track Pants Cost">
-
-        <input type="number" id="vestQty" placeholder="Vest Qty">
-        <input type="number" id="vestCost" placeholder="Vest Cost">
-
-        <input type="number" id="teleQty" placeholder="Telescopic Qty">
-        <input type="number" id="teleCost" placeholder="Telescopic Cost">
-
-        <input type="number" id="gazeboQty" placeholder="Gazebo Qty">
-        <input type="number" id="gazeboCost" placeholder="Gazebo Cost">
-
-        <input type="number" id="tentQty" placeholder="Stretch Tent Qty">
-        <input type="number" id="tentCost" placeholder="Stretch Tent Cost">
+        <div>
+          <label>Kids Cost Per Item</label>
+          <input type="number" id="kidsWindCost" min="0">
+        </div>
 
       </div>
 
     </div>
 
     <button onclick="generateReceipt()">
-      Generate Receipt
+      Generate Invoice
     </button>
 
   </div>
@@ -285,7 +276,7 @@
     </div>
 
     <div class="receipt-title">
-      Receipt / Quote
+      INVOICE / QUOTE
     </div>
 
     <p><strong>Date:</strong> <span id="r-date"></span></p>
@@ -294,22 +285,17 @@
 
     <p><strong>Team:</strong> <span id="r-team"></span></p>
 
+    <!-- TABLE -->
     <table>
 
       <thead>
 
         <tr>
-
           <th>Item</th>
-
           <th>Category</th>
-
           <th>Qty</th>
-
           <th>Cost</th>
-
           <th>Total</th>
-
         </tr>
 
       </thead>
@@ -318,6 +304,7 @@
 
     </table>
 
+    <!-- TOTALS -->
     <div class="totals">
 
       <p>
@@ -353,6 +340,7 @@
 
     </div>
 
+    <!-- FOOTER -->
     <div class="footer">
 
       <p>Thanks for your business!</p>
@@ -383,45 +371,6 @@
 
   const { jsPDF } = window.jspdf;
 
-  function addRow(item, category, qty, cost) {
-
-    qty = parseFloat(qty) || 0;
-    cost = parseFloat(cost) || 0;
-
-    if (qty <= 0 || cost <= 0) {
-      return {
-        html: "",
-        total: 0
-      };
-    }
-
-    const total = qty * cost;
-
-    const row = `
-
-      <tr>
-
-        <td>${item}</td>
-
-        <td>${category}</td>
-
-        <td>${qty}</td>
-
-        <td>P${cost.toFixed(2)}</td>
-
-        <td>P${total.toFixed(2)}</td>
-
-      </tr>
-
-    `;
-
-    return {
-      html: row,
-      total: total
-    };
-
-  }
-
   function generateReceipt() {
 
     const name =
@@ -435,173 +384,111 @@
 
     if (!name || !date || !team) {
 
-      alert("Please fill customer details.");
+      alert("Please fill all customer details.");
 
       return;
 
     }
 
-    let receiptHTML = "";
-
     let subtotal = 0;
 
-    // VNECKS
-    const vneckAdult =
-      addRow(
-        "V-Neck / Round Neck T-Shirt",
-        "Adult",
-        document.getElementById("vneckAdultQty").value,
-        document.getElementById("vneckAdultCost").value
-      );
+    let receiptHTML = "";
 
-    const vneckKids =
-      addRow(
-        "V-Neck / Round Neck T-Shirt",
-        "Kids",
-        document.getElementById("vneckKidsQty").value,
-        document.getElementById("vneckKidsCost").value
-      );
-
-    // TRACKSUITS
-    const tracksuitAdult =
-      addRow(
-        "Tracksuit",
-        "Adult",
-        document.getElementById("tracksuitAdultQty").value,
-        document.getElementById("tracksuitAdultCost").value
-      );
-
-    const tracksuitKids =
-      addRow(
-        "Tracksuit",
-        "Kids",
-        document.getElementById("tracksuitKidsQty").value,
-        document.getElementById("tracksuitKidsCost").value
-      );
-
-    // WINDBREAKERS
-    const windAdult =
-      addRow(
-        "Windbreaker",
-        "Adult",
-        document.getElementById("windAdultQty").value,
-        document.getElementById("windAdultCost").value
-      );
-
-    const windKids =
-      addRow(
-        "Windbreaker",
-        "Kids",
-        document.getElementById("windKidsQty").value,
-        document.getElementById("windKidsCost").value
-      );
-
-    // OTHER ITEMS
+    // ITEMS ARRAY
     const items = [
 
       {
-        item: "Golf T-Shirt",
-        qty: document.getElementById("golfQty").value,
-        cost: document.getElementById("golfCost").value
+        item: "T-Shirt",
+        category: "Adults",
+        qty: Number(document.getElementById("adultTshirtQty").value),
+        cost: Number(document.getElementById("adultTshirtCost").value)
       },
 
       {
-        item: "Bucket Hat",
-        qty: document.getElementById("bucketQty").value,
-        cost: document.getElementById("bucketCost").value
+        item: "T-Shirt",
+        category: "Kids",
+        qty: Number(document.getElementById("kidsTshirtQty").value),
+        cost: Number(document.getElementById("kidsTshirtCost").value)
       },
 
       {
-        item: "Track Top",
-        qty: document.getElementById("trackTopQty").value,
-        cost: document.getElementById("trackTopCost").value
+        item: "Tracksuit",
+        category: "Adults",
+        qty: Number(document.getElementById("adultTracksuitQty").value),
+        cost: Number(document.getElementById("adultTracksuitCost").value)
       },
 
       {
-        item: "Track Pants",
-        qty: document.getElementById("trackPantQty").value,
-        cost: document.getElementById("trackPantCost").value
+        item: "Tracksuit",
+        category: "Kids",
+        qty: Number(document.getElementById("kidsTracksuitQty").value),
+        cost: Number(document.getElementById("kidsTracksuitCost").value)
       },
 
       {
-        item: "Vest",
-        qty: document.getElementById("vestQty").value,
-        cost: document.getElementById("vestCost").value
+        item: "Windbreaker",
+        category: "Adults",
+        qty: Number(document.getElementById("adultWindQty").value),
+        cost: Number(document.getElementById("adultWindCost").value)
       },
 
       {
-        item: "Telescopic",
-        qty: document.getElementById("teleQty").value,
-        cost: document.getElementById("teleCost").value
-      },
-
-      {
-        item: "Gazebo",
-        qty: document.getElementById("gazeboQty").value,
-        cost: document.getElementById("gazeboCost").value
-      },
-
-      {
-        item: "Stretch Tent",
-        qty: document.getElementById("tentQty").value,
-        cost: document.getElementById("tentCost").value
+        item: "Windbreaker",
+        category: "Kids",
+        qty: Number(document.getElementById("kidsWindQty").value),
+        cost: Number(document.getElementById("kidsWindCost").value)
       }
 
     ];
 
-    const allRows = [
-
-      vneckAdult,
-      vneckKids,
-
-      tracksuitAdult,
-      tracksuitKids,
-
-      windAdult,
-      windKids
-
-    ];
-
-    // ADD MAIN ITEMS
-    allRows.forEach(row => {
-
-      receiptHTML += row.html;
-
-      subtotal += row.total;
-
-    });
-
-    // ADD OTHER ITEMS
+    // GENERATE TABLE
     items.forEach(data => {
 
-      const row =
-        addRow(
-          data.item,
-          "-",
-          data.qty,
-          data.cost
-        );
+      if (data.qty > 0 && data.cost > 0) {
 
-      receiptHTML += row.html;
+        const total =
+          data.qty * data.cost;
 
-      subtotal += row.total;
+        subtotal += total;
+
+        receiptHTML += `
+
+          <tr>
+
+            <td>${data.item}</td>
+
+            <td>${data.category}</td>
+
+            <td>${data.qty}</td>
+
+            <td>P${data.cost.toFixed(2)}</td>
+
+            <td>P${total.toFixed(2)}</td>
+
+          </tr>
+
+        `;
+
+      }
 
     });
 
     if (subtotal <= 0) {
 
-      alert("Please enter at least one product.");
+      alert("Please add at least one item.");
 
       return;
 
     }
 
     // CALCULATIONS
-    const deposit = subtotal * 0.70;
+    const deposit =
+      subtotal * 0.70;
 
-    const balance = subtotal * 0.30;
+    const balance =
+      subtotal * 0.30;
 
-    // SET RECEIPT DATA
+    // DISPLAY RECEIPT
     document.getElementById("r-name").textContent =
       name;
 
@@ -634,7 +521,7 @@
 
   }
 
-  // TOGGLE BUTTONS
+  // TOGGLE DOWNLOAD BUTTONS
   function toggleDownloadButtons(show) {
 
     const buttons =
@@ -715,15 +602,19 @@
       canvas.height * imgWidth / canvas.width;
 
     pdf.addImage(
+
       imgData,
       "JPEG",
       0,
       0,
       imgWidth,
       imgHeight
+
     );
 
-    pdf.save(`${generateFileName()}.pdf`);
+    pdf.save(
+      `${generateFileName()}.pdf`
+    );
 
     toggleDownloadButtons(true);
 
