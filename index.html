@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <title>PLAY SPORTS 3.0</title>
+  <title>PLAY SPORTS 4.0</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -20,8 +20,8 @@
     }
 
     .container {
-      width: 850px;
-      background: #fff;
+      width: 950px;
+      background: white;
       margin: auto;
       padding: 40px;
       border-radius: 10px;
@@ -50,30 +50,49 @@
       margin-bottom: 25px;
     }
 
-    input, select {
+    input {
 
       width: 100%;
       padding: 10px;
-      margin: 6px 0;
+      margin: 5px 0;
       border-radius: 5px;
       border: 1px solid #ccc;
       box-sizing: border-box;
-      font-size: 14px;
 
     }
 
-    .item-row {
+    .item-block {
 
-      display: grid;
-      grid-template-columns: 1.4fr 1fr 100px 120px;
-      gap: 10px;
-      margin-bottom: 10px;
-      align-items: center;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      background: #fafafa;
 
     }
 
     .item-title {
+
+      font-size: 18px;
       font-weight: bold;
+      margin-bottom: 10px;
+      color: #b722a6;
+
+    }
+
+    .row {
+
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+
+    }
+
+    .section-label {
+
+      font-weight: bold;
+      margin-top: 10px;
+
     }
 
     table {
@@ -109,9 +128,18 @@
 
     .highlight-box {
 
-      background: #f9e6f6;
+      background: #f8e8f6;
       padding: 15px;
       border-radius: 8px;
+      margin-top: 15px;
+
+    }
+
+    .delivery-box {
+
+      background: #f2f2f2;
+      padding: 12px;
+      border-radius: 6px;
       margin-top: 15px;
 
     }
@@ -121,17 +149,17 @@
       background: #b722a6;
       color: white;
       border: none;
-      padding: 12px 20px;
+      padding: 12px 22px;
       border-radius: 6px;
       cursor: pointer;
-      margin-top: 15px;
       font-size: 15px;
+      margin-top: 15px;
 
     }
 
     button:hover {
 
-      background: #8d1681;
+      background: #8c1b7f;
 
     }
 
@@ -148,15 +176,6 @@
 
       margin-top: 50px;
       text-align: center;
-
-    }
-
-    .delivery-box {
-
-      margin-top: 20px;
-      background: #f2f2f2;
-      padding: 12px;
-      border-radius: 6px;
 
     }
 
@@ -179,7 +198,7 @@
 
     <input type="text" id="teamName" placeholder="Team Name">
 
-    <h3>Select Items</h3>
+    <h3>Select Products</h3>
 
     <div id="items-container"></div>
 
@@ -215,7 +234,7 @@
 
     <p><strong>Team:</strong> <span id="r-team"></span></p>
 
-    <!-- ITEMS TABLE -->
+    <!-- TABLE -->
     <table>
 
       <thead>
@@ -228,7 +247,7 @@
 
           <th>Qty</th>
 
-          <th>Cost</th>
+          <th>Unit Cost</th>
 
           <th>Total</th>
 
@@ -312,57 +331,105 @@
 
     "V-Neck / Round Neck T-Shirt",
     "Golf T-Shirt",
-    "Bucket Hat",
     "Tracksuit 2 Piece",
-    "Track Top",
-    "Track Pants",
-    "Windbreaker",
-    "Vest",
-    "Telescopic",
-    "Gazebo",
-    "Stretch Tent"
+    "Windbreaker"
+
+  ];
+
+  const kidsAllowed = [
+
+    "V-Neck / Round Neck T-Shirt",
+    "Tracksuit 2 Piece",
+    "Windbreaker"
 
   ];
 
   const container =
     document.getElementById("items-container");
 
-  // GENERATE ITEM INPUTS
+  // CREATE INPUT BLOCKS
   items.forEach((item, index) => {
+
+    const allowKids =
+      kidsAllowed.includes(item);
 
     container.innerHTML += `
 
-      <div class="item-row">
+      <div class="item-block">
 
         <div class="item-title">
           ${item}
         </div>
 
-        <select id="type-${index}">
+        <div class="row">
 
-          <option value="Adult">
-            Adult
-          </option>
+          <!-- ADULT -->
+          <div>
 
-          <option value="Kids">
-            Kids
-          </option>
+            <div class="section-label">
+              Adult
+            </div>
 
-        </select>
+            <input
+              type="number"
+              min="0"
+              placeholder="Adult Quantity"
+              id="adult-qty-${index}"
+            >
 
-        <input
-          type="number"
-          min="0"
-          placeholder="Qty"
-          id="qty-${index}"
-        >
+            <input
+              type="number"
+              min="0"
+              placeholder="Adult Cost"
+              id="adult-cost-${index}"
+            >
 
-        <input
-          type="number"
-          min="0"
-          placeholder="Cost"
-          id="cost-${index}"
-        >
+          </div>
+
+          <!-- KIDS -->
+          <div>
+
+            ${
+              allowKids
+              ?
+
+              `
+
+              <div class="section-label">
+                Kids
+              </div>
+
+              <input
+                type="number"
+                min="0"
+                placeholder="Kids Quantity"
+                id="kids-qty-${index}"
+              >
+
+              <input
+                type="number"
+                min="0"
+                placeholder="Kids Cost"
+                id="kids-cost-${index}"
+              >
+
+              `
+
+              :
+
+              `
+
+              <div class="section-label">
+                Kids Not Available
+              </div>
+
+              `
+
+            }
+
+          </div>
+
+        </div>
 
       </div>
 
@@ -370,6 +437,7 @@
 
   });
 
+  // GENERATE RECEIPT
   function generateReceipt() {
 
     const name =
@@ -395,34 +463,41 @@
 
     items.forEach((item, index) => {
 
-      const type =
-        document.getElementById(`type-${index}`).value;
-
-      const qty =
+      // ADULT
+      const adultQty =
         parseFloat(
-          document.getElementById(`qty-${index}`).value
+          document.getElementById(`adult-qty-${index}`).value
         ) || 0;
 
-      let cost =
+      const adultCost =
         parseFloat(
-          document.getElementById(`cost-${index}`).value
+          document.getElementById(`adult-cost-${index}`).value
         ) || 0;
 
-      // KIDS DISCOUNT
-      // Automatically reduce kids cost by 20%
+      // KIDS
+      const kidsQtyInput =
+        document.getElementById(`kids-qty-${index}`);
 
-      if (type === "Kids") {
+      const kidsCostInput =
+        document.getElementById(`kids-cost-${index}`);
 
-        cost = cost * 0.80;
+      const kidsQty =
+        kidsQtyInput
+        ? parseFloat(kidsQtyInput.value) || 0
+        : 0;
 
-      }
+      const kidsCost =
+        kidsCostInput
+        ? parseFloat(kidsCostInput.value) || 0
+        : 0;
 
-      // ONLY INCLUDE FILLED ITEMS
-      if (qty > 0 && cost > 0) {
+      // ADULT ROW
+      if (adultQty > 0 && adultCost > 0) {
 
-        const total = qty * cost;
+        const adultTotal =
+          adultQty * adultCost;
 
-        subtotal += total;
+        subtotal += adultTotal;
 
         receiptHTML += `
 
@@ -430,13 +505,41 @@
 
             <td>${item}</td>
 
-            <td>${type}</td>
+            <td>Adult</td>
 
-            <td>${qty}</td>
+            <td>${adultQty}</td>
 
-            <td>P${cost.toFixed(2)}</td>
+            <td>P${adultCost.toFixed(2)}</td>
 
-            <td>P${total.toFixed(2)}</td>
+            <td>P${adultTotal.toFixed(2)}</td>
+
+          </tr>
+
+        `;
+
+      }
+
+      // KIDS ROW
+      if (kidsQty > 0 && kidsCost > 0) {
+
+        const kidsTotal =
+          kidsQty * kidsCost;
+
+        subtotal += kidsTotal;
+
+        receiptHTML += `
+
+          <tr>
+
+            <td>${item}</td>
+
+            <td>Kids</td>
+
+            <td>${kidsQty}</td>
+
+            <td>P${kidsCost.toFixed(2)}</td>
+
+            <td>P${kidsTotal.toFixed(2)}</td>
 
           </tr>
 
@@ -455,16 +558,21 @@
     }
 
     // CALCULATIONS
-    const deposit = subtotal * 0.70;
+    const deposit =
+      subtotal * 0.70;
 
-    const balance = subtotal * 0.30;
+    const balance =
+      subtotal * 0.30;
 
-    // RECEIPT DETAILS
-    document.getElementById("r-name").textContent = name;
+    // DISPLAY RECEIPT
+    document.getElementById("r-name").textContent =
+      name;
 
-    document.getElementById("r-date").textContent = date;
+    document.getElementById("r-date").textContent =
+      date;
 
-    document.getElementById("r-team").textContent = team;
+    document.getElementById("r-team").textContent =
+      team;
 
     document.getElementById("receipt-items").innerHTML =
       receiptHTML;
@@ -481,6 +589,7 @@
     document.getElementById("r-balance").textContent =
       `P${balance.toFixed(2)}`;
 
+    // SHOW RECEIPT
     document.getElementById("form-section").style.display =
       "none";
 
@@ -489,13 +598,14 @@
 
   }
 
-  // HIDE BUTTONS DURING EXPORT
+  // TOGGLE BUTTONS
   function toggleDownloadButtons(show) {
 
     const buttons =
       document.querySelector(".download-options");
 
-    buttons.style.display = show ? "flex" : "none";
+    buttons.style.display =
+      show ? "flex" : "none";
 
   }
 
@@ -549,12 +659,13 @@
 
     toggleDownloadButtons(false);
 
-    const canvas = await html2canvas(receipt, {
+    const canvas =
+      await html2canvas(receipt, {
 
-      scale: 2,
-      backgroundColor: "#ffffff"
+        scale: 2,
+        backgroundColor: "#ffffff"
 
-    });
+      });
 
     const imgData =
       canvas.toDataURL("image/jpeg", 1);
@@ -578,7 +689,9 @@
 
     );
 
-    pdf.save(`${generateFileName()}.pdf`);
+    pdf.save(
+      `${generateFileName()}.pdf`
+    );
 
     toggleDownloadButtons(true);
 
